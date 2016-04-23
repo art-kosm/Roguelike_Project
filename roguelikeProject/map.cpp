@@ -36,8 +36,11 @@ void Map::setTile(TerrainElement element)
 
 void Map::movePlayer(int x, int y)
 {
+	if (x > term_x - 1 || y > term_y - 1|| x < 0 || y < 0)
+		return;
 	if (!terrain[y][x].getPassability())
 		return;
+
 	player->setX(x);
 	player->setY(y);
 }
