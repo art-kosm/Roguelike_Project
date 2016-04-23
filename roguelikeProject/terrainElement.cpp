@@ -4,8 +4,8 @@ TerrainElement::TerrainElement() : isPassable(true)
 {
 }
 
-TerrainElement::TerrainElement(std::string name, char symbol, int x, int y, bool isPassable)
-	: MapElement(name, symbol, x ,y), isPassable(isPassable)
+TerrainElement::TerrainElement(std::string name, char symbol, bool isPassable)
+	: MapElement(name, symbol), isPassable(isPassable)
 {
 
 }

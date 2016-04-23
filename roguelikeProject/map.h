@@ -18,7 +18,7 @@ public:
 	void draw();
 	void drawTerrain();
 	void drawActors();
-	void setTile(TerrainElement element);
+	void setTile(TerrainElement element, int x, int y);
 	void movePlayer(int x, int y);
 	Actor *getPlayer();
 

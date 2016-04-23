@@ -16,7 +16,7 @@ int main()
 	curs_set(0);
 
 	Map *map = new Map();
-	map->setTile(TerrainElement("Impassable", '#', 40, 40, false));
+	map->setTile(TerrainElement("Impassable", '#', false), 40, 40);
 	int ch = 0;
 	bool exit = false;
 	while(!exit)

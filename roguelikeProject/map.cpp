@@ -5,6 +5,7 @@ Map::Map() : window(stdscr)
 	terrain = new TerrainElement *[term_y];
 	for (int i = 0; i < term_y; i++)
 		terrain[i] = new TerrainElement[term_x];
+
 	player = new Actor("player", '@', term_x / 2, term_y / 2, 1);
 }
 
@@ -29,9 +30,9 @@ void Map::drawTerrain()
 			mvaddch(i, j, terrain[i][j].getSymbol());
 }
 
-void Map::setTile(TerrainElement element)
+void Map::setTile(TerrainElement element, int x, int y)
 {
-	terrain[element.getX()][element.getY()] = element;
+	terrain[y][x] = element;
 }
 
 void Map::movePlayer(int x, int y)

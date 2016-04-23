@@ -6,7 +6,7 @@ class TerrainElement : public MapElement
 {
 public:
 	TerrainElement();
-	TerrainElement(string name, char symbol, int x, int y, bool isPassable);
+	TerrainElement(string name, char symbol, bool isPassable);
 	bool getPassability();
 
 private:

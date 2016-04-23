@@ -1,10 +1,10 @@
 #include "mapElement.h"
 
-MapElement::MapElement() : name ("default"), symbol('.'), x(0), y(0)
+MapElement::MapElement() : name ("default"), symbol('.')
 {
 }
 
-MapElement::MapElement(std::string &name, char symbol, int x, int y) : name(name), symbol(symbol), x(x), y(y)
+MapElement::MapElement(std::string &name, char symbol) : name(name), symbol(symbol)
 {
 }
 
@@ -13,23 +13,4 @@ char MapElement::getSymbol()
 	return symbol;
 }
 
-int MapElement::getX()
-{
-	return x;
-}
-
-int MapElement::getY()
-{
-	return y;
-}
-
-void MapElement::setX(int x)
-{
-	this->x = x;
-}
-
-void MapElement::setY(int y)
-{
-	this->y = y;
-}
 
