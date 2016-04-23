@@ -4,7 +4,7 @@ MapElement::MapElement() : name ("default"), symbol('.')
 {
 }
 
-MapElement::MapElement(std::string &name, char symbol) : name(name), symbol(symbol)
+MapElement::MapElement(std::string &name, std::string &type, char symbol) : name(name), type(type), symbol(symbol)
 {
 }
 

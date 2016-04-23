@@ -8,11 +8,12 @@ class MapElement
 {
 public:
 	MapElement();
-	MapElement(string &name, char symbol);
+	MapElement(string &name, string &type, char symbol);
 	char getSymbol();
 
 protected:
 	string name;
+	string type;
 	char symbol;
 };
 

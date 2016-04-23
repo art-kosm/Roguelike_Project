@@ -7,7 +7,8 @@ SOURCES += main.cpp \
     map.cpp \
     mapElement.cpp \
     actor.cpp \
-    terrainElement.cpp
+    terrainElement.cpp \
+    dungeon.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -23,4 +24,5 @@ HEADERS += \
     map.h \
     mapElement.h \
     actor.h \
-    terrainElement.h
+    terrainElement.h \
+    dungeon.h

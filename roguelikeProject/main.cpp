@@ -1,7 +1,7 @@
 #include <iostream>
 #include <curses.h>
 
-#include "map.h"
+#include "dungeon.h"
 #include "generalConstants.h"
 
 using namespace generalConstants;
@@ -15,47 +15,57 @@ int main()
 	keypad(stdscr, true);
 	curs_set(0);
 
-	Map *map = new Map();
-	map->setTile(TerrainElement("Impassable", '#', false), 40, 40);
+
+	Dungeon *dungeon = new Dungeon(4, 0);
+	Map *level = dungeon->getCurrentLevel();
+	level->setTile(TerrainElement("Impassable", "wall", '#', false), 40, 40);
 	int ch = 0;
 	bool exit = false;
 	while(!exit)
 	{
 		erase();
-		map->draw();
+		level->draw();
 		ch = getch();
 		switch (ch)
 		{
 		case '4':
-			map->movePlayer(map->getPlayer()->getX() - 1, map->getPlayer()->getY());
+			level->movePlayer(level->getPlayer()->getX() - 1, level->getPlayer()->getY());
 			break;
 		case '6':
-			map->movePlayer(map->getPlayer()->getX() + 1, map->getPlayer()->getY());
+			level->movePlayer(level->getPlayer()->getX() + 1, level->getPlayer()->getY());
 			break;
 		case '8':
-			map->movePlayer(map->getPlayer()->getX(), map->getPlayer()->getY() - 1);
+			level->movePlayer(level->getPlayer()->getX(), level->getPlayer()->getY() - 1);
 			break;
 		case '2':
-			map->movePlayer(map->getPlayer()->getX(), map->getPlayer()->getY() + 1);
+			level->movePlayer(level->getPlayer()->getX(), level->getPlayer()->getY() + 1);
 			break;
 		case '7':
-			map->movePlayer(map->getPlayer()->getX() - 1, map->getPlayer()->getY() - 1);
+			level->movePlayer(level->getPlayer()->getX() - 1, level->getPlayer()->getY() - 1);
 			break;
 		case '9':
-			map->movePlayer(map->getPlayer()->getX() + 1, map->getPlayer()->getY() - 1);
+			level->movePlayer(level->getPlayer()->getX() + 1, level->getPlayer()->getY() - 1);
 			break;
 		case '1':
-			map->movePlayer(map->getPlayer()->getX() - 1, map->getPlayer()->getY() + 1);
+			level->movePlayer(level->getPlayer()->getX() - 1, level->getPlayer()->getY() + 1);
 			break;
 		case '3':
-			map->movePlayer(map->getPlayer()->getX() + 1, map->getPlayer()->getY() + 1);
+			level->movePlayer(level->getPlayer()->getX() + 1, level->getPlayer()->getY() + 1);
+			break;
+		case '>':
+			dungeon->moveDown();
+			level = dungeon->getCurrentLevel();
+			break;
+		case '<':
+			dungeon->moveUp();
+			level = dungeon->getCurrentLevel();
 			break;
 		case KEY_F(1):
 			exit = true;
 			break;
 		}
 	}
-	delete map;
+	delete dungeon;
 
 	endwin();
 	return 0;

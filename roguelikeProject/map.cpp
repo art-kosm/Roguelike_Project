@@ -6,7 +6,13 @@ Map::Map() : window(stdscr)
 	for (int i = 0; i < term_y; i++)
 		terrain[i] = new TerrainElement[term_x];
 
-	player = new Actor("player", '@', term_x / 2, term_y / 2, 1);
+	//srand(time(1));
+	downExitPos = pair<int, int>(term_x / 2 - 2, term_y / 2 - 2);
+	upExitPos = pair<int, int>(term_x / 2 + 2, term_y / 2 + 2);
+	setTile(TerrainElement("exit_up", "exit_up", '<', true), upExitPos.first, upExitPos.second);
+	setTile(TerrainElement("exit_down", "exit_down", '>', true), downExitPos.first, downExitPos.second);
+
+	player = new Actor("player's name", "player", '@', term_x / 2, term_y / 2, 1);
 }
 
 Map::~Map()
@@ -30,6 +36,16 @@ void Map::drawTerrain()
 			mvaddch(i, j, terrain[i][j].getSymbol());
 }
 
+bool Map::playerIsOnUpExit()
+{
+	return player->getX() == upExitPos.first && player->getY() == upExitPos.second;
+}
+
+bool Map::playerIsOnDownExit()
+{
+	return player->getX() == downExitPos.first && player->getY() == downExitPos.second;
+}
+
 void Map::setTile(TerrainElement element, int x, int y)
 {
 	terrain[y][x] = element;
@@ -50,4 +66,15 @@ Actor *Map::getPlayer()
 {
 	return player;
 }
+
+pair<int, int> Map::getUpExitPos()
+{
+	return upExitPos;
+}
+
+pair<int, int> Map::getDownExitPos()
+{
+	return downExitPos;
+}
+
 

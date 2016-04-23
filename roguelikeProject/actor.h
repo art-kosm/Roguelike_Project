@@ -9,7 +9,7 @@ class Actor : public MapElement
 {
 public:
 	Actor();
-	Actor(string name, char symbol, int x, int y, int hp);
+	Actor(string name, std::string type, char symbol, int x, int y, int hp);
 	int getX();
 	int getY();
 	void setX(int x);

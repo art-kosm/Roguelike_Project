@@ -5,7 +5,7 @@ Actor::Actor() : hp(1)
 
 }
 
-Actor::Actor(std::string name, char symbol, int x, int y, int hp) : MapElement(name, symbol), hp(hp), x(x), y(y)
+Actor::Actor(string name, string type, char symbol, int x, int y, int hp) : MapElement(name, type, symbol), hp(hp), x(x), y(y)
 {
 
 }
