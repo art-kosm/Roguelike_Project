@@ -14,6 +14,12 @@ Dungeon::Dungeon(int depth, int current) : depth(depth)
 	this->current = current;
 }
 
+Dungeon::~Dungeon()
+{
+	for (int i = 0; i < depth; i++)
+		delete levels.at(i);
+}
+
 Map *Dungeon::getCurrentLevel()
 {
 	return levels.at(current);

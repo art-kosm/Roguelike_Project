@@ -9,6 +9,7 @@ class Dungeon
 public:
 	Dungeon();
 	Dungeon(int depth, int current);
+	~Dungeon();
 	Map *getCurrentLevel();
 	void moveUp();
 	void moveDown();

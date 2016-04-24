@@ -20,6 +20,8 @@ Map::~Map()
 	for (int i = 0; i < term_y; i++)
 		delete[] terrain[i];
 	delete[] terrain;
+
+	delete player;
 }
 
 void Map::draw()
