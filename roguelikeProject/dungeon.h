@@ -1,21 +1,30 @@
 #pragma once
 
 #include "map.h"
+#include "entrance.h"
 
 using std::vector;
 
+class Map;
 class Dungeon
 {
 public:
 	Dungeon();
-	Dungeon(int depth, int current);
+	Dungeon(int depth, char symbol, int current, int x, int y);
 	~Dungeon();
+	Map *getFirstLevel();
 	Map *getCurrentLevel();
-	void moveUp();
-	void moveDown();
+	void draw();
+	void connectLevels();
+	char getSymbol();
+	int getX();
+	int getY();
 
 private:
 	int depth;
+	char symbol;
 	vector<Map *> levels;
 	int current;
+	int x;
+	int y;
 };

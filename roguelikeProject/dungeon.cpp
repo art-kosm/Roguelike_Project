@@ -1,17 +1,21 @@
 #include "dungeon.h"
 
-Dungeon::Dungeon() : depth(5)
+Dungeon::Dungeon() : depth(5), symbol('*')
 {
 	for (int i = 0; i < depth; i++)
 		levels.push_back(new Map());
 	current = 0;
+	x = 0;
+	y = 0;
 }
 
-Dungeon::Dungeon(int depth, int current) : depth(depth)
+Dungeon::Dungeon(int depth, char symbol, int current, int x, int y) : depth(depth), symbol(symbol)
 {
 	for (int i = 0; i < depth; i++)
 		levels.push_back(new Map());
 	this->current = current;
+	this->x = x;
+	this->y = y;
 }
 
 Dungeon::~Dungeon()
@@ -20,30 +24,44 @@ Dungeon::~Dungeon()
 		delete levels.at(i);
 }
 
+Map *Dungeon::getFirstLevel()
+{
+	return levels.front();
+}
+
 Map *Dungeon::getCurrentLevel()
 {
 	return levels.at(current);
 }
 
-void Dungeon::moveUp()
+void Dungeon::draw()
 {
-	Map *level = getCurrentLevel();
-	if (level->playerIsOnUpExit() && current != 0)
+	mvaddch(y, x, symbol);
+}
+
+void Dungeon::connectLevels()
+{
+	for (int i = 0; i < depth - 1; i++)
 	{
-		current--;
-		level = getCurrentLevel();
-		level->movePlayer(level->getDownExitPos().first, level->getDownExitPos().second);
+		Map *level = levels.at(i);
+		Map *nextLevel = levels.at(i + 1);
+		level->addEntrance(new Entrance(term_x / 2, term_y / 2 - 2, '>', level, nextLevel));
+		nextLevel->addEntrance(new Entrance(term_x / 2, term_y / 2 + 2, '<', nextLevel, level));
 	}
 }
 
-void Dungeon::moveDown()
+char Dungeon::getSymbol()
 {
-	Map *level = getCurrentLevel();
-	if (level->playerIsOnDownExit() && current != depth - 1)
-	{
-		current++;
-		level = getCurrentLevel();
-		level->movePlayer(level->getUpExitPos().first, level->getUpExitPos().second);
-	}
+	return symbol;
+}
+
+int Dungeon::getX()
+{
+	return x;
+}
+
+int Dungeon::getY()
+{
+	return y;
 }
 

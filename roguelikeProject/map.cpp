@@ -2,17 +2,9 @@
 
 Map::Map() : window(stdscr)
 {
-	terrain = new TerrainElement *[term_y];
+	terrain = new Terrain *[term_y];
 	for (int i = 0; i < term_y; i++)
-		terrain[i] = new TerrainElement[term_x];
-
-	//srand(time(1));
-	downExitPos = pair<int, int>(term_x / 2 - 2, term_y / 2 - 2);
-	upExitPos = pair<int, int>(term_x / 2 + 2, term_y / 2 + 2);
-	setTile(TerrainElement("exit_up", "exit_up", '<', true), upExitPos.first, upExitPos.second);
-	setTile(TerrainElement("exit_down", "exit_down", '>', true), downExitPos.first, downExitPos.second);
-
-	player = new Actor("player's name", "player", '@', term_x / 2, term_y / 2, 1);
+		terrain[i] = new Terrain[term_x];
 }
 
 Map::~Map()
@@ -21,62 +13,70 @@ Map::~Map()
 		delete[] terrain[i];
 	delete[] terrain;
 
-	delete player;
+	for (int i = 0; (unsigned)i < dungeons.size(); i++)
+		delete dungeons.at(i);
+
+	for (int i = 0; (unsigned)i < entrances.size(); i++)
+		delete entrances.at(i);
 }
 
 void Map::draw()
 {
 	drawTerrain();
+	drawEntrances();
 	//drawActors();
-	mvaddch(player->getY(), player->getX(), player->getSymbol());
+}
+
+void Map::addDungeon(Dungeon *dungeon)
+{
+	dungeons.push_back(dungeon);
+	addEntrance(new Entrance(dungeon->getX(), dungeon->getY(), dungeon->getSymbol(), this, dungeon->getFirstLevel()));
+	dungeon->getFirstLevel()->addEntrance(new Entrance(term_x / 2, term_y / 2 + 2, '<', dungeon->getFirstLevel(), this));
+	dungeon->connectLevels();
+}
+
+void Map::addEntrance(Entrance *entrance)
+{
+	entrances.push_back(entrance);
 }
 
 void Map::drawTerrain()
 {
 	for (int i = 0; i < term_y; i++)
 		for (int j = 0; j < term_x; j++)
-			mvaddch(i, j, terrain[i][j].getSymbol());
+			terrain[i][j].draw(j, i);
 }
 
-bool Map::playerIsOnUpExit()
+void Map::drawEntrances()
 {
-	return player->getX() == upExitPos.first && player->getY() == upExitPos.second;
+	for (int i = 0; (unsigned)i < entrances.size(); i++)
+		entrances.at(i)->draw();
 }
 
-bool Map::playerIsOnDownExit()
-{
-	return player->getX() == downExitPos.first && player->getY() == downExitPos.second;
-}
-
-void Map::setTile(TerrainElement element, int x, int y)
+void Map::setTerrainTile(Terrain element, int x, int y)
 {
 	terrain[y][x] = element;
 }
 
-void Map::movePlayer(int x, int y)
+int Map::getEntrancesNumber()
 {
-	if (x > term_x - 1 || y > term_y - 1|| x < 0 || y < 0)
-		return;
-	if (!terrain[y][x].getPassability())
-		return;
-
-	player->setX(x);
-	player->setY(y);
+	return entrances.size();
 }
 
-Actor *Map::getPlayer()
+Entrance *Map::getEntranceOn(int x, int y)
 {
-	return player;
+	for (int i = 0; (unsigned)i < entrances.size(); i++)
+		if (entrances.at(i)->getX() == x && entrances.at(i)->getY() == y)
+			return entrances.at(i);
+	return nullptr;
 }
 
-pair<int, int> Map::getUpExitPos()
+Entrance *Map::getEntranceByLeadsTo(Map *leadsTo)
 {
-	return upExitPos;
-}
-
-pair<int, int> Map::getDownExitPos()
-{
-	return downExitPos;
+	for (int i = 0; (unsigned)i < entrances.size(); i++)
+		if (entrances.at(i)->getLeadsTo() == leadsTo)
+			return entrances.at(i);
+	return nullptr;
 }
 
 

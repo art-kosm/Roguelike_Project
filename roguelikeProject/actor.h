@@ -1,19 +1,21 @@
 #pragma once
 
 #include <iostream>
-#include "mapElement.h"
+#include "tile.h"
+#include "generalConstants.h"
 
 using std::string;
+using namespace generalConstants;
 
-class Actor : public MapElement
+class Actor : public Tile
 {
 public:
 	Actor();
-	Actor(string name, std::string type, char symbol, int x, int y, int hp);
+	Actor(const string &name, const string &type, char symbol, int x, int y, int hp);
+	void draw();
 	int getX();
 	int getY();
-	void setX(int x);
-	void setY(int y);
+	void move(int x, int y);
 
 private:
 	int hp;

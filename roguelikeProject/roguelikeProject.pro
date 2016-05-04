@@ -5,13 +5,17 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     map.cpp \
-    mapElement.cpp \
     actor.cpp \
-    terrainElement.cpp \
-    dungeon.cpp
+    dungeon.cpp \
+    gameController.cpp \
+    tile.cpp \
+    terrain.cpp \
+    entrance.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
+
+QMAKE_CXXFLAGS += -std=c++11
 
 
 win32: LIBS += -L$$PWD/../libs/pdc34dllw/ -lpdcurses
@@ -22,7 +26,9 @@ DEPENDPATH += $$PWD/../libs/pdc34dllw
 HEADERS += \
     generalConstants.h \
     map.h \
-    mapElement.h \
     actor.h \
-    terrainElement.h \
-    dungeon.h
+    dungeon.h \
+    gameController.h \
+    tile.h \
+    terrain.h \
+    entrance.h
