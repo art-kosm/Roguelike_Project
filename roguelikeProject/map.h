@@ -17,6 +17,7 @@ using std::vector;
 
 class Dungeon;
 class Entrance;
+class Actor;
 class Map
 {
 public:
@@ -31,6 +32,8 @@ public:
 	Entrance *getEntranceOn(int x, int y);
 	Entrance *getEntranceByLeadsTo(Map *leadsTo);
 	Dungeon *getDungeonByName(const string &name);
+	Actor *getActorOn(int x, int y);
+	bool tileIsOccupied(int x, int y);
 
 private:
 	WINDOW *window;

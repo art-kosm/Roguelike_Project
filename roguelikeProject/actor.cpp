@@ -1,15 +1,16 @@
 #include "actor.h"
 
-Actor::Actor() : hp(1)
+Actor::Actor() : hp(1), locatedOn(nullptr)
 {
 
 }
 
-Actor::Actor(const string &name, const string &type, char symbol, int x, int y, int hp) :
+Actor::Actor(const string &name, const string &type, char symbol, int x, int y, int hp, Map *locatedOn) :
 	Tile(name, type, symbol),
 	hp(hp),
 	x(x),
-	y(y)
+	y(y),
+	locatedOn(locatedOn)
 {
 }
 
@@ -33,7 +34,15 @@ void Actor::move(int x, int y)
 	if (x > term_x - 1 || x < 0 || y > term_y - 1 || y < 0)
 		return;
 
+	if (locatedOn->tileIsOccupied(x, y))
+		return;
+
 	this->x = x;
 	this->y = y;
+}
+
+void Actor::setMap(Map *map)
+{
+	locatedOn = map;
 }
 

@@ -6,9 +6,10 @@ GameController::GameController()
 	worldMap->addDungeon(new Dungeon("Right dungeon", 4, '*', 0, term_x / 2 + 2, term_y / 2));
 	worldMap->addDungeon(new Dungeon("Left dungeon", 4, '*', 0, term_x / 2 - 2, term_y / 2));
 
-	worldMap->getDungeonByName("Right dungeon")->getFirstLevel()->addActor(new Actor("orc", "humanoid", 'o', 5, 5, 10));
+	Map *rightDungeonFirstLevel = worldMap->getDungeonByName("Right dungeon")->getFirstLevel();
+	rightDungeonFirstLevel->addActor(new Actor("orc", "humanoid", 'o', 5, 5, 10, rightDungeonFirstLevel));
 
-	player = new Actor("player", "player", '@', term_x / 2, term_y / 2, 1);
+	player = new Actor("player", "player", '@', term_x / 2, term_y / 2, 1, worldMap);
 	currentDungeon = nullptr;
 	currentMap = worldMap;
 	state = playing;
@@ -66,6 +67,7 @@ void GameController::processTurn()
 			currentMap = entrance->getLeadsTo();
 			pairingEntrance = currentMap->getEntranceByLeadsTo(previousMap);
 			player->move(pairingEntrance->getX(), pairingEntrance->getY());
+			player->setMap(currentMap);
 		}
 		break;
 	case 'q':

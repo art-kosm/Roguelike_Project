@@ -101,4 +101,20 @@ Dungeon *Map::getDungeonByName(const std::string &name)
 	return nullptr;
 }
 
+Actor *Map::getActorOn(int x, int y)
+{
+	for (int i = 0; (unsigned)i < actors.size(); i++)
+		if (actors.at(i)->getX() == x && actors.at(i)->getY() == y)
+			return actors.at(i);
+	return nullptr;
+}
+
+bool Map::tileIsOccupied(int x, int y)
+{
+	for (int i = 0; (unsigned)i < actors.size(); i++)
+		if (actors.at(i)->getX() == x && actors.at(i)->getY() == y)
+			return true;
+	return false;
+}
+
 
