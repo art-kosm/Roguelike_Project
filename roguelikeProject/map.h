@@ -14,7 +14,6 @@
 
 using namespace generalConstants;
 using std::vector;
-using std::pair;
 
 class Dungeon;
 class Entrance;
@@ -26,16 +25,19 @@ public:
 	void draw();
 	void addDungeon(Dungeon *dungeon);
 	void addEntrance(Entrance *entrance);
+	void addActor(Actor *actor);
 	void setTerrainTile(Terrain element, int x, int y);
 	int getEntrancesNumber();
 	Entrance *getEntranceOn(int x, int y);
 	Entrance *getEntranceByLeadsTo(Map *leadsTo);
+	Dungeon *getDungeonByName(const string &name);
 
 private:
 	WINDOW *window;
 	Terrain **terrain;
 	vector<Dungeon *> dungeons;
 	vector<Entrance *> entrances;
+	vector<Actor *> actors;
 
 	void drawTerrain();
 	void drawEntrances();

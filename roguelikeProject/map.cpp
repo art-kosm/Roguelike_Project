@@ -18,13 +18,16 @@ Map::~Map()
 
 	for (int i = 0; (unsigned)i < entrances.size(); i++)
 		delete entrances.at(i);
+
+	for (int i = 0; (unsigned)i < actors.size(); i++)
+		delete actors.at(i);
 }
 
 void Map::draw()
 {
 	drawTerrain();
 	drawEntrances();
-	//drawActors();
+	drawActors();
 }
 
 void Map::addDungeon(Dungeon *dungeon)
@@ -40,6 +43,11 @@ void Map::addEntrance(Entrance *entrance)
 	entrances.push_back(entrance);
 }
 
+void Map::addActor(Actor *actor)
+{
+	actors.push_back(actor);
+}
+
 void Map::drawTerrain()
 {
 	for (int i = 0; i < term_y; i++)
@@ -51,6 +59,12 @@ void Map::drawEntrances()
 {
 	for (int i = 0; (unsigned)i < entrances.size(); i++)
 		entrances.at(i)->draw();
+}
+
+void Map::drawActors()
+{
+	for (int i = 0; (unsigned)i < actors.size(); i++)
+		actors.at(i)->draw();
 }
 
 void Map::setTerrainTile(Terrain element, int x, int y)
@@ -76,6 +90,14 @@ Entrance *Map::getEntranceByLeadsTo(Map *leadsTo)
 	for (int i = 0; (unsigned)i < entrances.size(); i++)
 		if (entrances.at(i)->getLeadsTo() == leadsTo)
 			return entrances.at(i);
+	return nullptr;
+}
+
+Dungeon *Map::getDungeonByName(const std::string &name)
+{
+	for (int i = 0; (unsigned)i < dungeons.size(); i++)
+		if (dungeons.at(i)->getName() == name)
+			return dungeons.at(i);
 	return nullptr;
 }
 

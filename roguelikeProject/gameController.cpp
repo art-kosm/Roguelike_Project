@@ -3,8 +3,10 @@
 GameController::GameController()
 {
 	worldMap = new Map();
-	worldMap->addDungeon(new Dungeon(4, '*', 0, term_x / 2 + 2, term_y / 2));
-	worldMap->addDungeon(new Dungeon(4, '*', 0, term_x / 2 - 2, term_y / 2));
+	worldMap->addDungeon(new Dungeon("Right dungeon", 4, '*', 0, term_x / 2 + 2, term_y / 2));
+	worldMap->addDungeon(new Dungeon("Left dungeon", 4, '*', 0, term_x / 2 - 2, term_y / 2));
+
+	worldMap->getDungeonByName("Right dungeon")->getFirstLevel()->addActor(new Actor("orc", "humanoid", 'o', 5, 5, 10));
 
 	player = new Actor("player", "player", '@', term_x / 2, term_y / 2, 1);
 	currentDungeon = nullptr;

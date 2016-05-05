@@ -1,26 +1,31 @@
 #pragma once
 
+#include <iostream>
 #include "map.h"
 #include "entrance.h"
 
 using std::vector;
+using std::string;
 
 class Map;
 class Dungeon
 {
 public:
 	Dungeon();
-	Dungeon(int depth, char symbol, int current, int x, int y);
+	Dungeon(const string &name, int depth, char symbol, int current, int x, int y);
 	~Dungeon();
 	Map *getFirstLevel();
 	Map *getCurrentLevel();
+	Map *getLevel(int depth);
 	void draw();
 	void connectLevels();
+	const string &getName();
 	char getSymbol();
 	int getX();
 	int getY();
 
 private:
+	string name;
 	int depth;
 	char symbol;
 	vector<Map *> levels;

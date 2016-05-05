@@ -1,6 +1,6 @@
 #include "dungeon.h"
 
-Dungeon::Dungeon() : depth(5), symbol('*')
+Dungeon::Dungeon() : name("Default dungeon"), depth(5), symbol('*')
 {
 	for (int i = 0; i < depth; i++)
 		levels.push_back(new Map());
@@ -9,7 +9,8 @@ Dungeon::Dungeon() : depth(5), symbol('*')
 	y = 0;
 }
 
-Dungeon::Dungeon(int depth, char symbol, int current, int x, int y) : depth(depth), symbol(symbol)
+Dungeon::Dungeon(const std::string &name, int depth, char symbol, int current, int x, int y) :
+	name(name), depth(depth), symbol(symbol)
 {
 	for (int i = 0; i < depth; i++)
 		levels.push_back(new Map());
@@ -34,6 +35,11 @@ Map *Dungeon::getCurrentLevel()
 	return levels.at(current);
 }
 
+Map *Dungeon::getLevel(int depth)
+{
+	return levels.at(depth);
+}
+
 void Dungeon::draw()
 {
 	mvaddch(y, x, symbol);
@@ -48,6 +54,11 @@ void Dungeon::connectLevels()
 		level->addEntrance(new Entrance(term_x / 2, term_y / 2 - 2, '>', level, nextLevel));
 		nextLevel->addEntrance(new Entrance(term_x / 2, term_y / 2 + 2, '<', nextLevel, level));
 	}
+}
+
+const std::string &Dungeon::getName()
+{
+	return name;
 }
 
 char Dungeon::getSymbol()
