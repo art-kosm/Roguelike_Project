@@ -5,6 +5,10 @@ Map::Map() : window(stdscr)
 	terrain = new Terrain *[term_y];
 	for (int i = 0; i < term_y; i++)
 		terrain[i] = new Terrain[term_x];
+
+	for (int i = 0; i < term_y; i++)
+		for (int j = 0; j < term_x; j++)
+			terrain[i][j].intiialize("Stone floor", "floor", '.', true);
 }
 
 Map::~Map()
@@ -115,6 +119,11 @@ bool Map::tileIsOccupied(int x, int y)
 		if (actors.at(i)->getX() == x && actors.at(i)->getY() == y)
 			return true;
 	return false;
+}
+
+bool Map::tileIsPassable(int x, int y)
+{
+	return terrain[y][x].getPassability();
 }
 
 

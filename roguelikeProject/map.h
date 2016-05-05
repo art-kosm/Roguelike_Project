@@ -34,6 +34,7 @@ public:
 	Dungeon *getDungeonByName(const string &name);
 	Actor *getActorOn(int x, int y);
 	bool tileIsOccupied(int x, int y);
+	bool tileIsPassable(int x, int y);
 
 private:
 	WINDOW *window;

@@ -34,7 +34,7 @@ void Actor::move(int x, int y)
 	if (x > term_x - 1 || x < 0 || y > term_y - 1 || y < 0)
 		return;
 
-	if (locatedOn->tileIsOccupied(x, y))
+	if (locatedOn->tileIsOccupied(x, y) || !locatedOn->tileIsPassable(x, y))
 		return;
 
 	this->x = x;

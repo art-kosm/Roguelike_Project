@@ -8,6 +8,7 @@ GameController::GameController()
 
 	Map *rightDungeonFirstLevel = worldMap->getDungeonByName("Right dungeon")->getFirstLevel();
 	rightDungeonFirstLevel->addActor(new Actor("orc", "humanoid", 'o', 5, 5, 10, rightDungeonFirstLevel));
+	rightDungeonFirstLevel->setTerrainTile(Terrain("wall", "wall", '#', false), 6, 6);
 
 	player = new Actor("player", "player", '@', term_x / 2, term_y / 2, 1, worldMap);
 	currentDungeon = nullptr;
