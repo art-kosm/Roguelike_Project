@@ -28,6 +28,8 @@ public:
 	void addEntrance(Entrance *entrance);
 	void addActor(Actor *actor);
 	void setTerrainTile(Terrain element, int x, int y);
+	Terrain getTerrainTileAt(int x, int y);
+	void setTileSeen(int x, int y, bool status);
 	int getEntrancesNumber();
 	Entrance *getEntranceOn(int x, int y);
 	Entrance *getEntranceByLeadsTo(Map *leadsTo);
@@ -35,6 +37,7 @@ public:
 	Actor *getActorOn(int x, int y);
 	bool tileIsOccupied(int x, int y);
 	bool tileIsPassable(int x, int y);
+	void setEverythingSeen(bool status);
 
 private:
 	WINDOW *window;

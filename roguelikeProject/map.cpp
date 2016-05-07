@@ -8,7 +8,7 @@ Map::Map() : window(stdscr)
 
 	for (int i = 0; i < term_y; i++)
 		for (int j = 0; j < term_x; j++)
-			terrain[i][j].intiialize("Stone floor", "floor", '.', true);
+			terrain[i][j].intiialize("Stone floor", "floor", '.', true, true);
 }
 
 Map::~Map()
@@ -76,6 +76,22 @@ void Map::setTerrainTile(Terrain element, int x, int y)
 	terrain[y][x] = element;
 }
 
+Terrain Map::getTerrainTileAt(int x, int y)
+{
+	return terrain[y][x];
+}
+
+void Map::setTileSeen(int x, int y, bool status)
+{
+	terrain[y][x].setSeen(status);
+	for (int i = 0; (unsigned)i < entrances.size(); i++)
+		if (entrances.at(i)->getX() == x && entrances.at(i)->getY() == y)
+			entrances.at(i)->setSeen(status);
+	for (int i = 0; (unsigned)i < actors.size(); i++)
+		if (actors.at(i)->getX() == x && actors.at(i)->getY() == y)
+			actors.at(i)->setSeen(status);
+}
+
 int Map::getEntrancesNumber()
 {
 	return entrances.size();
@@ -124,6 +140,17 @@ bool Map::tileIsOccupied(int x, int y)
 bool Map::tileIsPassable(int x, int y)
 {
 	return terrain[y][x].getPassability();
+}
+
+void Map::setEverythingSeen(bool status)
+{
+	for (int i = 0; i < term_y; i++)
+		for (int j = 0; j < term_x; j++)
+			terrain[i][j].setSeen(status);
+	for (int i = 0; (unsigned)i < entrances.size(); i++)
+		entrances.at(i)->setSeen(status);
+	for (int i = 0; (unsigned)i < actors.size(); i++)
+		actors.at(i)->setSeen(status);
 }
 
 

@@ -1,8 +1,9 @@
 #pragma once
 
-#include <dungeon.h>
-#include <actor.h>
-#include <map.h>
+#include "dungeon.h"
+#include "actor.h"
+#include "map.h"
+#include "fieldOfView.h"
 
 enum GameState
 {

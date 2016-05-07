@@ -1,21 +1,25 @@
 #include "actor.h"
 
-Actor::Actor() : hp(1), locatedOn(nullptr)
+Actor::Actor() : hp(1), perceptionRadius(5), locatedOn(nullptr)
 {
 
 }
 
-Actor::Actor(const string &name, const string &type, char symbol, int x, int y, int hp, Map *locatedOn) :
+Actor::Actor(const string &name, const string &type, char symbol, int x, int y, int hp,
+			 int perceptionRadius, Map *locatedOn) :
 	Tile(name, type, symbol),
 	hp(hp),
 	x(x),
 	y(y),
+	perceptionRadius(perceptionRadius),
 	locatedOn(locatedOn)
 {
 }
 
 void Actor::draw()
 {
+	if (!isSeen)
+		return;
 	mvaddch(y, x, symbol);
 }
 
@@ -27,6 +31,11 @@ int Actor::getX()
 int Actor::getY()
 {
 	return y;
+}
+
+int Actor::getPerceptionRadius()
+{
+	return perceptionRadius;
 }
 
 void Actor::move(int x, int y)

@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     gameController.cpp \
     tile.cpp \
     terrain.cpp \
-    entrance.cpp
+    entrance.cpp \
+    fieldOfView.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -31,4 +32,5 @@ HEADERS += \
     gameController.h \
     tile.h \
     terrain.h \
-    entrance.h
+    entrance.h \
+    fieldOfView.h

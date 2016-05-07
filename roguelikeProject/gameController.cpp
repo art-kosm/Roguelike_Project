@@ -7,10 +7,11 @@ GameController::GameController()
 	worldMap->addDungeon(new Dungeon("Left dungeon", 4, '*', 0, term_x / 2 - 2, term_y / 2));
 
 	Map *rightDungeonFirstLevel = worldMap->getDungeonByName("Right dungeon")->getFirstLevel();
-	rightDungeonFirstLevel->addActor(new Actor("orc", "humanoid", 'o', 5, 5, 10, rightDungeonFirstLevel));
-	rightDungeonFirstLevel->setTerrainTile(Terrain("wall", "wall", '#', false), 6, 6);
+	rightDungeonFirstLevel->addActor(new Actor("orc", "humanoid", 'o', 5, 5, 10, 5, rightDungeonFirstLevel));
+	rightDungeonFirstLevel->setTerrainTile(Terrain("wall", "wall", '#', false, false), 6, 6);
 
-	player = new Actor("player", "player", '@', term_x / 2, term_y / 2, 1, worldMap);
+	player = new Actor("player", "player", '@', term_x / 2, term_y / 2, 1, 7, worldMap);
+	player->setSeen(true);
 	currentDungeon = nullptr;
 	currentMap = worldMap;
 	state = playing;
@@ -24,6 +25,7 @@ GameController::~GameController()
 
 void GameController::draw()
 {
+	FieldOfView::calculate(player->getX(), player->getY(), currentMap, player->getPerceptionRadius());
 	currentMap->draw();
 	player->draw();
 }

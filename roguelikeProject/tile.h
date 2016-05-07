@@ -9,14 +9,18 @@ class Tile
 {
 public:
 	Tile();
-	Tile(const string &name, const string &type, char symbol);
+	Tile(const string &name, const string &type, char symbol, bool isSeen = false, bool isRemembered = false);
 	virtual ~Tile();
 	virtual void draw(int x, int y);
 	char getSymbol();
+	void setSeen(bool status);
+	void setRemembered(bool status);
 
 protected:
 	string name;
 	string type;
 	char symbol;
+	bool isSeen;
+	bool isRemembered;
 };
 

@@ -13,10 +13,12 @@ class Actor : public Tile
 {
 public:
 	Actor();
-	Actor(const string &name, const string &type, char symbol, int x, int y, int hp, Map *locatedOn = nullptr);
+	Actor(const string &name, const string &type, char symbol, int x, int y, int hp,
+		  int perceptionRadius, Map *locatedOn = nullptr);
 	void draw();
 	int getX();
 	int getY();
+	int getPerceptionRadius();
 	void move(int x, int y);
 	void setMap(Map *map);
 
@@ -24,6 +26,7 @@ private:
 	int hp;
 	int x;
 	int y;
+	int perceptionRadius;
 	Map *locatedOn;
 };
 

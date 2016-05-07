@@ -8,6 +8,7 @@ using std::vector;
 using std::string;
 
 class Map;
+//A lot of things here are not used, should consider removing them.
 class Dungeon
 {
 public:
