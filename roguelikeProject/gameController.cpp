@@ -6,11 +6,11 @@ GameController::GameController()
 	worldMap->addDungeon(new Dungeon("Right dungeon", 4, '*', 0, term_x / 2 + 2, term_y / 2));
 	worldMap->addDungeon(new Dungeon("Left dungeon", 4, '*', 0, term_x / 2 - 2, term_y / 2));
 
-	Map *rightDungeonFirstLevel = worldMap->getDungeonByName("Right dungeon")->getFirstLevel();
-	rightDungeonFirstLevel->addActor(new Actor("orc", "humanoid", 'o', 5, 5, 10, 5, rightDungeonFirstLevel));
-	rightDungeonFirstLevel->setTerrainTile(Terrain("wall", "wall", '#', false, false), 6, 6);
+	worldMap->getDungeonByName("Right dungeon")->setLevel(1, new Map("testMap_30x10.txt"));
+	Map *rightDungeonSecondLevel = worldMap->getDungeonByName("Right dungeon")->getLevel(1);
+	rightDungeonSecondLevel->addActor(new Actor("orc", "humanoid", 'o', term_x / 2, term_y / 2, 10, 5, new CowardlyAI(), rightDungeonSecondLevel));
 
-	player = new Actor("player", "player", '@', term_x / 2, term_y / 2, 1, 7, worldMap);
+	player = new Actor("player", "player", '@', term_x / 2, term_y / 2, 1, 7, new PlayerAI(), worldMap);
 	player->setSeen(true);
 	currentDungeon = nullptr;
 	currentMap = worldMap;
@@ -77,10 +77,11 @@ void GameController::processTurn()
 		state = over;
 		break;
 	}
+
+	currentMap->processActorsTurns(player);
 }
 
 bool GameController::gameIsOver()
 {
 	return state == over;
 }
-

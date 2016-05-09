@@ -4,6 +4,8 @@
 #include <time.h>
 #include <curses.h>
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 #include "dungeon.h"
 #include "entrance.h"
@@ -11,10 +13,14 @@
 #include "terrain.h"
 #include "actor.h"
 #include "generalConstants.h"
+#include "pathfinding.h"
 
 using namespace generalConstants;
 using std::vector;
+using std::string;
+using std::ifstream;
 
+class Pathfinding;
 class Dungeon;
 class Entrance;
 class Actor;
@@ -22,6 +28,7 @@ class Map
 {
 public:
 	Map();
+	Map(const string &filename);
 	~Map();
 	void draw();
 	void addDungeon(Dungeon *dungeon);
@@ -38,6 +45,8 @@ public:
 	bool tileIsOccupied(int x, int y);
 	bool tileIsPassable(int x, int y);
 	void setEverythingSeen(bool status);
+	void processActorsTurns(Actor *player);
+	Pathfinding *getPathfinding();
 
 private:
 	WINDOW *window;
@@ -45,6 +54,7 @@ private:
 	vector<Dungeon *> dungeons;
 	vector<Entrance *> entrances;
 	vector<Actor *> actors;
+	Pathfinding *pathfinding;
 
 	void drawTerrain();
 	void drawEntrances();

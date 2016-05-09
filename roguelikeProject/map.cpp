@@ -9,6 +9,36 @@ Map::Map() : window(stdscr)
 	for (int i = 0; i < term_y; i++)
 		for (int j = 0; j < term_x; j++)
 			terrain[i][j].intiialize("Stone floor", "floor", '.', true, true);
+
+	pathfinding = new Pathfinding(this);
+}
+
+Map::Map(const string &filename)
+{
+	ifstream file(filename);
+	if (!file.is_open())
+	{
+		Map();
+		return;
+	}
+
+	terrain = new Terrain *[term_y];
+	for (int i = 0; i < term_y; i++)
+		terrain[i] = new Terrain[term_x];
+
+	for (int i = 0; i < term_y; i++)
+		for (int j = 0; j < term_x; j++)
+		{
+			char ch = ' ';
+			file >> ch;
+			if (ch == '#')
+				terrain[i][j].intiialize("Wall", "wall", '#', false, false);
+			else
+				terrain[i][j].intiialize("Stone floor", "floor", '.', true, true);
+		}
+	file.close();
+
+	pathfinding = new Pathfinding(this);
 }
 
 Map::~Map()
@@ -25,6 +55,8 @@ Map::~Map()
 
 	for (int i = 0; (unsigned)i < actors.size(); i++)
 		delete actors.at(i);
+
+	delete pathfinding;
 }
 
 void Map::draw()
@@ -44,6 +76,9 @@ void Map::addDungeon(Dungeon *dungeon)
 
 void Map::addEntrance(Entrance *entrance)
 {
+	for (int i = 0; (unsigned)i < entrances.size(); i++)
+		if (entrances.at(i) == entrance)
+			return;
 	entrances.push_back(entrance);
 }
 
@@ -151,6 +186,17 @@ void Map::setEverythingSeen(bool status)
 		entrances.at(i)->setSeen(status);
 	for (int i = 0; (unsigned)i < actors.size(); i++)
 		actors.at(i)->setSeen(status);
+}
+
+void Map::processActorsTurns(Actor *player)
+{
+	for (int i = 0; (unsigned)i < actors.size(); i++)
+		actors.at(i)->takeTurn(player);
+}
+
+Pathfinding *Map::getPathfinding()
+{
+	return pathfinding;
 }
 
 

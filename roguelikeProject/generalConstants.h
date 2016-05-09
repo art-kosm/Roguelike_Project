@@ -2,6 +2,6 @@
 
 namespace generalConstants
 {
-	const int term_x = 150;
-	const int term_y = 50;
+	const int term_x = 30;
+	const int term_y = 10;
 }

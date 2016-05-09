@@ -40,6 +40,17 @@ Map *Dungeon::getLevel(int depth)
 	return levels.at(depth);
 }
 
+void Dungeon::setLevel(int depth, Map *level)
+{
+	Map *temp = levels.at(depth);
+	levels.at(depth + 1)->getEntranceByLeadsTo(temp)->setLeadsTo(level);
+	levels.at(depth - 1)->getEntranceByLeadsTo(temp)->setLeadsTo(level);
+	level->addEntrance(new Entrance(term_x / 2, term_y / 2 - 2, '>', level, levels.at(depth + 1)));
+	level->addEntrance(new Entrance(term_x / 2, term_y / 2 + 2, '<', level, levels.at(depth - 1)));
+	levels.at(depth) = level;
+	delete temp;
+}
+
 void Dungeon::draw()
 {
 	mvaddch(y, x, symbol);

@@ -34,31 +34,35 @@ void FieldOfView::calculate(int x, int y, Map *map, int radius)
 	}
 }
 
-bool FieldOfView::lineOfSight(int x1, int y1, int x2, int y2, Map *map)
+bool FieldOfView::lineOfSight(int x1, int y1, int x2, int y2, Map *map, int maxLength)
 {
-	bool steep = abs(y2 - y1) > abs(x2 - x1);
+	float length = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+		if (length > maxLength)
+			return false;
+
+	const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
 	if (steep)
 	{
-		swap(x1, y1);
-		swap(x2, y2);
+		std::swap(x1, y1);
+		std::swap(x2, y2);
 	}
+
 	if (x1 > x2)
 	{
-		swap(x1, x2);
-		swap(y1, y2);
+		std::swap(x1, x2);
+		std::swap(y1, y2);
 	}
 
-	int dx = abs(x2 - x1);
-	int dy = abs(y2 - y1);
-	int error = dx / 2;
-	int yStep = 0;
-	if (y1 < y2)
-		yStep = 1;
-	else
-		yStep = -1;
+	const float dx = x2 - x1;
+	const float dy = fabs(y2 - y1);
+
+	float error = dx / 2.0f;
+	const int ystep = (y1 < y2) ? 1 : -1;
 	int y = y1;
 
-	for (int x = x1; x <= x2; x++)
+	const int maxX = x2;
+
+	for (int x = x1; x < maxX; x++)
 	{
 		if (steep)
 		{
@@ -74,17 +78,10 @@ bool FieldOfView::lineOfSight(int x1, int y1, int x2, int y2, Map *map)
 		error -= dy;
 		if (error < 0)
 		{
-			y += yStep;
+			y += ystep;
 			error += dx;
 		}
 	}
+
 	return true;
 }
-
-void FieldOfView::swap(int a, int b)
-{
-	int temp = a;
-	a = b;
-	b = temp;
-}
-

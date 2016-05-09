@@ -1,17 +1,18 @@
 #include "actor.h"
 
-Actor::Actor() : hp(1), perceptionRadius(5), locatedOn(nullptr)
+Actor::Actor() : hp(1), perceptionRadius(5), behaviour(nullptr), locatedOn(nullptr)
 {
 
 }
 
 Actor::Actor(const string &name, const string &type, char symbol, int x, int y, int hp,
-			 int perceptionRadius, Map *locatedOn) :
+			 int perceptionRadius, AI *behaviour, Map *locatedOn) :
 	Tile(name, type, symbol),
 	hp(hp),
 	x(x),
 	y(y),
 	perceptionRadius(perceptionRadius),
+	behaviour(behaviour),
 	locatedOn(locatedOn)
 {
 }
@@ -38,6 +39,11 @@ int Actor::getPerceptionRadius()
 	return perceptionRadius;
 }
 
+void Actor::takeTurn(Actor *player)
+{
+	behaviour->takeTurn(this, player);
+}
+
 void Actor::move(int x, int y)
 {
 	if (x > term_x - 1 || x < 0 || y > term_y - 1 || y < 0)
@@ -53,5 +59,16 @@ void Actor::move(int x, int y)
 void Actor::setMap(Map *map)
 {
 	locatedOn = map;
+}
+
+Map *Actor::getMap()
+{
+	return locatedOn;
+}
+
+void Actor::setAI(AI *behaviour)
+{
+	delete this->behaviour;
+	this->behaviour = behaviour;
 }
 

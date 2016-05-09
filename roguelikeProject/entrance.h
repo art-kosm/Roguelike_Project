@@ -16,6 +16,7 @@ public:
 	Map *getLeadsTo();
 	Map *getLeadsFrom();
 	void setSeen(bool status);
+	void setLeadsTo(Map *map);
 
 protected:
 	int x;

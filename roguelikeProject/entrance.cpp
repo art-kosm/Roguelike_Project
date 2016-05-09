@@ -59,3 +59,8 @@ void Entrance::setSeen(bool status)
 		isRemembered = true;
 }
 
+void Entrance::setLeadsTo(Map *map)
+{
+	leadsTo = map;
+}
+

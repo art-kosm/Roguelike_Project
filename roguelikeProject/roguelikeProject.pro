@@ -11,7 +11,12 @@ SOURCES += main.cpp \
     tile.cpp \
     terrain.cpp \
     entrance.cpp \
-    fieldOfView.cpp
+    fieldOfView.cpp \
+    AI.cpp \
+    aggressiveAI.cpp \
+    playerAI.cpp \
+    pathfinding.cpp \
+    cowardlyAI.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -33,4 +38,9 @@ HEADERS += \
     tile.h \
     terrain.h \
     entrance.h \
-    fieldOfView.h
+    fieldOfView.h \
+    AI.h \
+    aggressiveAI.h \
+    playerAI.h \
+    pathfinding.h \
+    cowardlyAI.h

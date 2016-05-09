@@ -18,6 +18,8 @@ public:
 	Map *getFirstLevel();
 	Map *getCurrentLevel();
 	Map *getLevel(int depth);
+	//Doesn't work on first one now
+	void setLevel(int depth, Map *level);
 	void draw();
 	void connectLevels();
 	const string &getName();

@@ -4,6 +4,9 @@
 #include "actor.h"
 #include "map.h"
 #include "fieldOfView.h"
+#include "aggressiveAI.h"
+#include "cowardlyAI.h"
+#include "playerAI.h"
 
 enum GameState
 {
@@ -11,6 +14,8 @@ enum GameState
 	over
 };
 
+class Actor;
+class Dungeon;
 class GameController
 {
 public:
