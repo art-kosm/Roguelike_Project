@@ -24,6 +24,11 @@ void Actor::draw(int indent)
 	mvaddch(y + indent, x, symbol);
 }
 
+int Actor::getHP()
+{
+	return hp;
+}
+
 int Actor::getX()
 {
 	return x;

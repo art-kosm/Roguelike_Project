@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     playerAI.cpp \
     pathfinding.cpp \
     cowardlyAI.cpp \
-    UI.cpp
+    UI.cpp \
+    item.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -45,4 +46,5 @@ HEADERS += \
     playerAI.h \
     pathfinding.h \
     cowardlyAI.h \
-    UI.h
+    UI.h \
+    item.h

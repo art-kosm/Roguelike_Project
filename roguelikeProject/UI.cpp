@@ -3,21 +3,29 @@
 UI::UI()
 {
 	statusBar = createNewWindow(status_bar_y, status_bar_x, 0, 0);
+	statsBar = createNewWindow(stats_bar_y, stats_bar_x, 0, term_y - stats_bar_y);
 }
 
 UI::~UI()
 {
 	destroyWindow(statusBar);
+	destroyWindow(statsBar);
 }
 
 void UI::refresh()
 {
 	wrefresh(statusBar);
+	wrefresh(statsBar);
 }
 
 void UI::writeToStatusBar(const std::string &message)
 {
 	wprintw(statusBar, message.c_str());
+}
+
+void UI::writeToStatsBar(const std::string &message)
+{
+	wprintw(statsBar, message.c_str());
 }
 
 void UI::clearStatusBar()

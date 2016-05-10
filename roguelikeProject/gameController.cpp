@@ -19,6 +19,8 @@ GameController::GameController()
 	currentDungeon = nullptr;
 	currentMap = worldMap;
 	state = playing;
+
+	ui->writeToStatsBar("HP:" + std::to_string(player->getHP()));
 }
 
 GameController::~GameController()

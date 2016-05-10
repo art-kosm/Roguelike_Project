@@ -18,6 +18,7 @@ public:
 	Actor(const string &name, const string &type, char symbol, int x, int y, int hp,
 		  int perceptionRadius, AI *behaviour, Map *locatedOn = nullptr);
 	void draw(int indent = 0);
+	int getHP();
 	int getX();
 	int getY();
 	int getPerceptionRadius();
