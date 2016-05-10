@@ -10,7 +10,7 @@ public:
 	Entrance();
 	Entrance(int x, int y, char symbol, Map *leadsFrom, Map *leadsTo, bool isSeen = false, bool isRemembered = false);
 	~Entrance();
-	void draw();
+	void draw(int indent = 0);
 	int getX();
 	int getY();
 	Map *getLeadsTo();

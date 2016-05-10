@@ -2,15 +2,16 @@
 
 Map::Map() : window(stdscr)
 {
-	terrain = new Terrain *[term_y];
-	for (int i = 0; i < term_y; i++)
-		terrain[i] = new Terrain[term_x];
+	terrain = new Terrain *[map_y];
+	for (int i = 0; i < map_y; i++)
+		terrain[i] = new Terrain[map_x];
 
-	for (int i = 0; i < term_y; i++)
-		for (int j = 0; j < term_x; j++)
+	for (int i = 0; i < map_y; i++)
+		for (int j = 0; j < map_x; j++)
 			terrain[i][j].intiialize("Stone floor", "floor", '.', true, true);
 
 	pathfinding = new Pathfinding(this);
+	name = "Some map";
 }
 
 Map::Map(const string &filename)
@@ -22,12 +23,12 @@ Map::Map(const string &filename)
 		return;
 	}
 
-	terrain = new Terrain *[term_y];
-	for (int i = 0; i < term_y; i++)
-		terrain[i] = new Terrain[term_x];
+	terrain = new Terrain *[map_y];
+	for (int i = 0; i < map_y; i++)
+		terrain[i] = new Terrain[map_x];
 
-	for (int i = 0; i < term_y; i++)
-		for (int j = 0; j < term_x; j++)
+	for (int i = 0; i < map_y; i++)
+		for (int j = 0; j < map_x; j++)
 		{
 			char ch = ' ';
 			file >> ch;
@@ -39,11 +40,12 @@ Map::Map(const string &filename)
 	file.close();
 
 	pathfinding = new Pathfinding(this);
+	name = "Some map";
 }
 
 Map::~Map()
 {
-	for (int i = 0; i < term_y; i++)
+	for (int i = 0; i < map_y; i++)
 		delete[] terrain[i];
 	delete[] terrain;
 
@@ -59,18 +61,18 @@ Map::~Map()
 	delete pathfinding;
 }
 
-void Map::draw()
+void Map::draw(int indent)
 {
-	drawTerrain();
-	drawEntrances();
-	drawActors();
+	drawTerrain(indent);
+	drawEntrances(indent);
+	drawActors(indent);
 }
 
 void Map::addDungeon(Dungeon *dungeon)
 {
 	dungeons.push_back(dungeon);
 	addEntrance(new Entrance(dungeon->getX(), dungeon->getY(), dungeon->getSymbol(), this, dungeon->getFirstLevel()));
-	dungeon->getFirstLevel()->addEntrance(new Entrance(term_x / 2, term_y / 2 + 2, '<', dungeon->getFirstLevel(), this));
+	dungeon->getFirstLevel()->addEntrance(new Entrance(map_x / 2, map_y / 2 + 2, '<', dungeon->getFirstLevel(), this));
 	dungeon->connectLevels();
 }
 
@@ -87,23 +89,23 @@ void Map::addActor(Actor *actor)
 	actors.push_back(actor);
 }
 
-void Map::drawTerrain()
+void Map::drawTerrain(int indent)
 {
-	for (int i = 0; i < term_y; i++)
-		for (int j = 0; j < term_x; j++)
-			terrain[i][j].draw(j, i);
+	for (int i = 0; i < map_y; i++)
+		for (int j = 0; j < map_x; j++)
+			terrain[i][j].draw(j, i + indent);
 }
 
-void Map::drawEntrances()
+void Map::drawEntrances(int indent)
 {
 	for (int i = 0; (unsigned)i < entrances.size(); i++)
-		entrances.at(i)->draw();
+		entrances.at(i)->draw(indent);
 }
 
-void Map::drawActors()
+void Map::drawActors(int indent)
 {
 	for (int i = 0; (unsigned)i < actors.size(); i++)
-		actors.at(i)->draw();
+		actors.at(i)->draw(indent);
 }
 
 void Map::setTerrainTile(Terrain element, int x, int y)
@@ -179,8 +181,8 @@ bool Map::tileIsPassable(int x, int y)
 
 void Map::setEverythingSeen(bool status)
 {
-	for (int i = 0; i < term_y; i++)
-		for (int j = 0; j < term_x; j++)
+	for (int i = 0; i < map_y; i++)
+		for (int j = 0; j < map_x; j++)
 			terrain[i][j].setSeen(status);
 	for (int i = 0; (unsigned)i < entrances.size(); i++)
 		entrances.at(i)->setSeen(status);
@@ -197,6 +199,16 @@ void Map::processActorsTurns(Actor *player)
 Pathfinding *Map::getPathfinding()
 {
 	return pathfinding;
+}
+
+const std::string &Map::getName()
+{
+	return name;
+}
+
+void Map::setName(const std::string &name)
+{
+	this->name = name;
 }
 
 

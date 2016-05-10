@@ -2,6 +2,10 @@
 
 namespace generalConstants
 {
-	const int term_x = 30;
-	const int term_y = 10;
+	const int map_x = 30;
+	const int map_y = 10;
+	const int status_bar_x = map_x;
+	const int status_bar_y = 3;
+	const int term_x = map_x;
+	const int term_y = status_bar_y + map_y;
 }

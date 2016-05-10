@@ -4,6 +4,10 @@ Dungeon::Dungeon() : name("Default dungeon"), depth(5), symbol('*')
 {
 	for (int i = 0; i < depth; i++)
 		levels.push_back(new Map());
+
+	for (int i = 0; i < depth; i++)
+		levels.at(i)->setName(name + ", level" + std::to_string(i + 1));
+
 	current = 0;
 	x = 0;
 	y = 0;
@@ -14,6 +18,10 @@ Dungeon::Dungeon(const std::string &name, int depth, char symbol, int current, i
 {
 	for (int i = 0; i < depth; i++)
 		levels.push_back(new Map());
+
+	for (int i = 0; i < depth; i++)
+		levels.at(i)->setName(name + ", level " + std::to_string(i + 1));
+
 	this->current = current;
 	this->x = x;
 	this->y = y;
@@ -43,10 +51,11 @@ Map *Dungeon::getLevel(int depth)
 void Dungeon::setLevel(int depth, Map *level)
 {
 	Map *temp = levels.at(depth);
+	level->setName(temp->getName());
 	levels.at(depth + 1)->getEntranceByLeadsTo(temp)->setLeadsTo(level);
 	levels.at(depth - 1)->getEntranceByLeadsTo(temp)->setLeadsTo(level);
-	level->addEntrance(new Entrance(term_x / 2, term_y / 2 - 2, '>', level, levels.at(depth + 1)));
-	level->addEntrance(new Entrance(term_x / 2, term_y / 2 + 2, '<', level, levels.at(depth - 1)));
+	level->addEntrance(new Entrance(map_x / 2, map_y / 2 - 2, '>', level, levels.at(depth + 1)));
+	level->addEntrance(new Entrance(map_x / 2, map_y / 2 + 2, '<', level, levels.at(depth - 1)));
 	levels.at(depth) = level;
 	delete temp;
 }
@@ -62,8 +71,8 @@ void Dungeon::connectLevels()
 	{
 		Map *level = levels.at(i);
 		Map *nextLevel = levels.at(i + 1);
-		level->addEntrance(new Entrance(term_x / 2, term_y / 2 - 2, '>', level, nextLevel));
-		nextLevel->addEntrance(new Entrance(term_x / 2, term_y / 2 + 2, '<', nextLevel, level));
+		level->addEntrance(new Entrance(map_x / 2, map_y / 2 - 2, '>', level, nextLevel));
+		nextLevel->addEntrance(new Entrance(map_x / 2, map_y / 2 + 2, '<', nextLevel, level));
 	}
 }
 

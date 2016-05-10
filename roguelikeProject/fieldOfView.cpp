@@ -25,7 +25,7 @@ void FieldOfView::calculate(int x, int y, Map *map, int radius)
 			temp_x += dx;
 			temp_y += dy;
 
-			if (temp_x > term_x - 1 || temp_x < 0 || temp_y > term_y - 1 || temp_y < 0)
+			if (temp_x > map_x - 1 || temp_x < 0 || temp_y > map_y - 1 || temp_y < 0)
 				break;
 			map->setTileSeen(round(temp_x), round(temp_y), true);
 			if (!map->getTerrainTileAt(round(temp_x), round(temp_y)).getPassability())

@@ -30,7 +30,7 @@ public:
 	Map();
 	Map(const string &filename);
 	~Map();
-	void draw();
+	void draw(int indent = 0);
 	void addDungeon(Dungeon *dungeon);
 	void addEntrance(Entrance *entrance);
 	void addActor(Actor *actor);
@@ -47,6 +47,8 @@ public:
 	void setEverythingSeen(bool status);
 	void processActorsTurns(Actor *player);
 	Pathfinding *getPathfinding();
+	const string &getName();
+	void setName(const string &name);
 
 private:
 	WINDOW *window;
@@ -55,8 +57,9 @@ private:
 	vector<Entrance *> entrances;
 	vector<Actor *> actors;
 	Pathfinding *pathfinding;
+	string name;
 
-	void drawTerrain();
-	void drawEntrances();
-	void drawActors();
+	void drawTerrain(int indent = 0);
+	void drawEntrances(int indent = 0);
+	void drawActors(int indent = 0);
 };

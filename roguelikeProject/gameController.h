@@ -1,5 +1,6 @@
 #pragma once
 
+#include "UI.h"
 #include "dungeon.h"
 #include "actor.h"
 #include "map.h"
@@ -31,4 +32,5 @@ private:
 	Dungeon *currentDungeon;
 	Map *currentMap;
 	GameState state;
+	UI *ui;
 };

@@ -21,14 +21,14 @@ Entrance::~Entrance()
 		delete leadsTo;*/
 }
 
-void Entrance::draw()
+void Entrance::draw(int indent)
 {
 	if (!isRemembered)
 		return;
 	if (!isSeen)
 		attron(A_DIM);
 
-	mvaddch(y, x, symbol);
+	mvaddch(y + indent, x, symbol);
 	attroff(A_DIM);
 }
 

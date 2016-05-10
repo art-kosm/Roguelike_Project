@@ -17,11 +17,11 @@ Actor::Actor(const string &name, const string &type, char symbol, int x, int y, 
 {
 }
 
-void Actor::draw()
+void Actor::draw(int indent)
 {
 	if (!isSeen)
 		return;
-	mvaddch(y, x, symbol);
+	mvaddch(y + indent, x, symbol);
 }
 
 int Actor::getX()
@@ -46,7 +46,7 @@ void Actor::takeTurn(Actor *player)
 
 void Actor::move(int x, int y)
 {
-	if (x > term_x - 1 || x < 0 || y > term_y - 1 || y < 0)
+	if (x > map_x - 1 || x < 0 || y > map_y - 1 || y < 0)
 		return;
 
 	if (locatedOn->tileIsOccupied(x, y) || !locatedOn->tileIsPassable(x, y))
