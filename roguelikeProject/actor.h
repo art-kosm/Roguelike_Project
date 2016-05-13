@@ -1,10 +1,11 @@
 #pragma once
 
 #include <iostream>
-#include "tile.h"
+//#include "tile.h"
 #include "generalConstants.h"
 #include "map.h"
 #include "AI.h"
+#include "inventory.h"
 
 using std::string;
 using namespace generalConstants;
@@ -27,6 +28,11 @@ public:
 	void setMap(Map *map);
 	Map *getMap();
 	void setAI(AI *behaviour);
+	void takeDamage(int damage);
+	bool isAlive();
+	Inventory *getInventory();
+	Item *pickUpItem();
+	void dropItem(Item *item);
 
 private:
 	int hp;
@@ -35,5 +41,7 @@ private:
 	int perceptionRadius;
 	AI *behaviour;
 	Map *locatedOn;
+	bool alive;
+	Inventory *inventory;
 };
 

@@ -49,4 +49,14 @@ void Tile::setRemembered(bool status)
 	isRemembered = status;
 }
 
+const std::string &Tile::getName()
+{
+	return name;
+}
+
+const std::string &Tile::getType()
+{
+	return type;
+}
+
 

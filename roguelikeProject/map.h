@@ -10,6 +10,7 @@
 #include "dungeon.h"
 #include "entrance.h"
 #include "tile.h"
+#include "item.h"
 #include "terrain.h"
 #include "actor.h"
 #include "generalConstants.h"
@@ -34,6 +35,7 @@ public:
 	void addDungeon(Dungeon *dungeon);
 	void addEntrance(Entrance *entrance);
 	void addActor(Actor *actor);
+	void addItem(Item *item);
 	void setTerrainTile(Terrain element, int x, int y);
 	Terrain getTerrainTileAt(int x, int y);
 	void setTileSeen(int x, int y, bool status);
@@ -49,17 +51,21 @@ public:
 	Pathfinding *getPathfinding();
 	const string &getName();
 	void setName(const string &name);
+	Item *getItemAt(int x, int y);
+	void removeItem(Item *item);
 
 private:
 	WINDOW *window;
 	Terrain **terrain;
 	vector<Dungeon *> dungeons;
 	vector<Entrance *> entrances;
+	vector<Item *> items;
 	vector<Actor *> actors;
 	Pathfinding *pathfinding;
 	string name;
 
 	void drawTerrain(int indent = 0);
 	void drawEntrances(int indent = 0);
+	void drawItems(int indent = 0);
 	void drawActors(int indent = 0);
 };

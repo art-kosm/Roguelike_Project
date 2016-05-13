@@ -58,6 +58,9 @@ Map::~Map()
 	for (int i = 0; (unsigned)i < actors.size(); i++)
 		delete actors.at(i);
 
+	for (int i = 0; (unsigned)i < items.size(); i++)
+		delete items.at(i);
+
 	delete pathfinding;
 }
 
@@ -65,6 +68,7 @@ void Map::draw(int indent)
 {
 	drawTerrain(indent);
 	drawEntrances(indent);
+	drawItems(indent);
 	drawActors(indent);
 }
 
@@ -89,6 +93,11 @@ void Map::addActor(Actor *actor)
 	actors.push_back(actor);
 }
 
+void Map::addItem(Item *item)
+{
+	items.push_back(item);
+}
+
 void Map::drawTerrain(int indent)
 {
 	for (int i = 0; i < map_y; i++)
@@ -100,6 +109,12 @@ void Map::drawEntrances(int indent)
 {
 	for (int i = 0; (unsigned)i < entrances.size(); i++)
 		entrances.at(i)->draw(indent);
+}
+
+void Map::drawItems(int indent)
+{
+	for (int i = 0; (unsigned)i < items.size(); i++)
+		items.at(i)->draw(indent);
 }
 
 void Map::drawActors(int indent)
@@ -127,6 +142,9 @@ void Map::setTileSeen(int x, int y, bool status)
 	for (int i = 0; (unsigned)i < actors.size(); i++)
 		if (actors.at(i)->getX() == x && actors.at(i)->getY() == y)
 			actors.at(i)->setSeen(status);
+	for (int i = 0; (unsigned)i < items.size(); i++)
+		if (items.at(i)->getX() == x && items.at(i)->getY() == y)
+			items.at(i)->setSeen(status);
 }
 
 int Map::getEntrancesNumber()
@@ -188,6 +206,8 @@ void Map::setEverythingSeen(bool status)
 		entrances.at(i)->setSeen(status);
 	for (int i = 0; (unsigned)i < actors.size(); i++)
 		actors.at(i)->setSeen(status);
+	for (int i = 0; (unsigned)i < items.size(); i++)
+		items.at(i)->setSeen(status);
 }
 
 void Map::processActorsTurns(Actor *player)
@@ -209,6 +229,21 @@ const std::string &Map::getName()
 void Map::setName(const std::string &name)
 {
 	this->name = name;
+}
+
+Item *Map::getItemAt(int x, int y)
+{
+	for (int i = 0; (unsigned)i < items.size(); i++)
+		if (items.at(i)->getX() == x && items.at(i)->getY() == y)
+			return items.at(i);
+	return nullptr;
+}
+
+void Map::removeItem(Item *item)
+{
+	for (int i = 0; (unsigned)i < items.size(); i++)
+		if (items.at(i) == item)
+			items.erase(items.begin() + i);
 }
 
 

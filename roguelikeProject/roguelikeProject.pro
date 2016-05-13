@@ -18,7 +18,10 @@ SOURCES += main.cpp \
     pathfinding.cpp \
     cowardlyAI.cpp \
     UI.cpp \
-    item.cpp
+    item.cpp \
+    weapon.cpp \
+    armor.cpp \
+    inventory.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -47,4 +50,7 @@ HEADERS += \
     pathfinding.h \
     cowardlyAI.h \
     UI.h \
-    item.h
+    item.h \
+    weapon.h \
+    armor.h \
+    inventory.h

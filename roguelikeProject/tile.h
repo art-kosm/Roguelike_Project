@@ -15,6 +15,8 @@ public:
 	char getSymbol();
 	void setSeen(bool status);
 	void setRemembered(bool status);
+	const string &getName();
+	const string &getType();
 
 protected:
 	string name;

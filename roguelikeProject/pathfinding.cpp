@@ -48,6 +48,14 @@ pair<int, int> Pathfinding::nextStepAway(int start_x, int start_y, int destinati
 	return maxNeighborPos(start_x, start_y);
 }
 
+int Pathfinding::getDistance(int x1, int y1, int x2, int y2)
+{
+	if (dijkstraMap[y2][x2] != 0)
+		calculateDijkstraMap(x2, y2, dijkstraMap);
+	int distance = dijkstraMap[y1][x1];
+	return distance;
+}
+
 void Pathfinding::calculateDijkstraMap(int destination_x, int destination_y, float **dijkstraMap)
 {
 	for (int i = 0; i < map_y; i++)
@@ -61,12 +69,12 @@ void Pathfinding::calculateDijkstraMap(int destination_x, int destination_y, flo
 		changed = false;
 		for (int i = 0; i < map_y; i++)
 			for (int j = 0; j < map_x; j++)
-				if (map->getTerrainTileAt(j, i).getPassability())
-					if (dijkstraMap[i][j] - dijkstraMap[minNeighborPos(j, i).second][minNeighborPos(j, i).first] >= 2)
-					{
-						dijkstraMap[i][j] = dijkstraMap[minNeighborPos(j, i).second][minNeighborPos(j, i).first] + 1;
-						changed = true;
-					}
+				if (map->getTerrainTileAt(j, i).getPassability() &&
+					dijkstraMap[i][j] - dijkstraMap[minNeighborPos(j, i).second][minNeighborPos(j, i).first] >= 2)
+				{
+					dijkstraMap[i][j] = dijkstraMap[minNeighborPos(j, i).second][minNeighborPos(j, i).first] + 1;
+					changed = true;
+				}
 	}
 }
 

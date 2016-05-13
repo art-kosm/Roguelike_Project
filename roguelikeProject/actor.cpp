@@ -1,8 +1,7 @@
 #include "actor.h"
 
-Actor::Actor() : hp(1), perceptionRadius(5), behaviour(nullptr), locatedOn(nullptr)
+Actor::Actor() : hp(1), perceptionRadius(5), behaviour(nullptr), locatedOn(nullptr), alive(true), inventory(new Inventory)
 {
-
 }
 
 Actor::Actor(const string &name, const string &type, char symbol, int x, int y, int hp,
@@ -13,7 +12,9 @@ Actor::Actor(const string &name, const string &type, char symbol, int x, int y, 
 	y(y),
 	perceptionRadius(perceptionRadius),
 	behaviour(behaviour),
-	locatedOn(locatedOn)
+	locatedOn(locatedOn),
+	alive(true),
+	inventory(new Inventory)
 {
 }
 
@@ -75,5 +76,43 @@ void Actor::setAI(AI *behaviour)
 {
 	delete this->behaviour;
 	this->behaviour = behaviour;
+}
+
+void Actor::takeDamage(int damage)
+{
+	hp -= damage;
+	if (hp <= 0)
+		alive = false;
+}
+
+bool Actor::isAlive()
+{
+	return alive;
+}
+
+Inventory *Actor::getInventory()
+{
+	return inventory;
+}
+
+Item *Actor::pickUpItem()
+{
+	Item *item = locatedOn->getItemAt(x, y);
+	if (item == nullptr)
+		return nullptr;
+
+	locatedOn->removeItem(item);
+	inventory->addItem(item);
+	return item;
+}
+
+void Actor::dropItem(Item *item)
+{
+	if (!inventory->hasItem(item))
+		return;
+	item->setX(x);
+	item->setY(y);
+	locatedOn->addItem(item);
+	inventory->removeItem(item);
 }
 

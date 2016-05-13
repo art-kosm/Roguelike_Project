@@ -2,24 +2,33 @@
 
 GameController::GameController()
 {
-	ui = new UI();
-	ui->writeToStatusBar("TTEST");
-
 	worldMap = new Map();
 	worldMap->setName("World map");
 	worldMap->addDungeon(new Dungeon("Right dungeon", 4, '*', 0, map_x / 2 + 2, map_y / 2));
 	worldMap->addDungeon(new Dungeon("Left dungeon", 4, '*', 0, map_x / 2 - 2, map_y / 2));
 
-	worldMap->getDungeonByName("Right dungeon")->setLevel(1, new Map("testMap_30x10.txt"));
+/*#ifdef SMALL
+	worldMap->getDungeonByName("Right dungeon")->setLevel(1, new Map("testMap_30x10.txt"));*/
+/*#elif MEDIUM*/
+#ifdef MEDIUM
+	worldMap->getDungeonByName("Right dungeon")->setLevel(1, new Map("testMap_90x30.txt"));
+#else
+	worldMap->getDungeonByName("Right dungeon")->setLevel(1, new Map("testMap_150x50.txt"));
+#endif
 	Map *rightDungeonSecondLevel = worldMap->getDungeonByName("Right dungeon")->getLevel(1);
-	rightDungeonSecondLevel->addActor(new Actor("AI-driven orc!", "humanoid", 'o', map_x / 2, map_y / 2, 10, 5, new CowardlyAI(), rightDungeonSecondLevel));
+	//rightDungeonSecondLevel->addActor(new Actor("AI-driven orc!", "humanoid", 'o', map_x / 2, map_y / 2, 10, 5, new CowardlyAI(), rightDungeonSecondLevel));
+	rightDungeonSecondLevel->addItem(new Weapon("THE AXE", 6, map_x / 2, map_y / 2));
 
 	player = new Actor("player", "player", '@', map_x / 2, map_y / 2, 1, 7, new PlayerAI(), worldMap);
 	player->setSeen(true);
+	player->getInventory()->addItem(new Weapon("THE SWORD", 5));
+	player->getInventory()->addItem(new Armor("THE ARMOR", 5));
 	currentDungeon = nullptr;
 	currentMap = worldMap;
 	state = playing;
 
+	ui = new UI();
+	ui->writeToStatusBar("TTEST");
 	ui->writeToStatsBar("HP:" + std::to_string(player->getHP()));
 }
 
@@ -46,6 +55,7 @@ void GameController::processTurn()
 	Entrance *entrance = nullptr;
 	Entrance *pairingEntrance = nullptr;
 	Map *previousMap = nullptr;
+	Item *item = nullptr;
 	switch (command)
 	{
 	case '4':
@@ -72,6 +82,7 @@ void GameController::processTurn()
 	case '3':
 		player->move(player->getX() + 1, player->getY() + 1);
 		break;
+
 	case 'e':
 		entrance = currentMap->getEntranceOn(player->getX(), player->getY());
 		if (entrance == nullptr)
@@ -87,6 +98,19 @@ void GameController::processTurn()
 		player->setMap(currentMap);
 		ui->writeToStatusBar("You entered " + currentMap->getName() + "!");
 		break;
+
+	case 'i':
+		ui->browseInventory(player);
+		break;
+
+	case 'p':
+		item = player->pickUpItem();
+		if (item == nullptr)
+			ui->writeToStatusBar("Unable to pick up!");
+		else
+			ui->writeToStatusBar("Picked up " + item->getName() + "!");
+		break;
+
 	case 'q':
 		state = over;
 		break;
