@@ -36,6 +36,11 @@ void UI::clearStatusBar()
 	//wrefresh(statusBar);
 }
 
+void UI::clearStatsBar()
+{
+	werase(statsBar);
+}
+
 void UI::browseInventory(Actor *actor)
 {
 	scr_dump("temp.scr");

@@ -1,7 +1,7 @@
 #pragma once
 
 //#define SMALL
-#define MEDIUM
+//#define MEDIUM
 
 namespace generalConstants
 {

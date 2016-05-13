@@ -14,6 +14,7 @@ int main()
 	noecho();
 	keypad(stdscr, true);
 	curs_set(0);
+	start_color();
 
 	GameController *controller = new GameController();
 	controller->draw();
@@ -23,6 +24,9 @@ int main()
 		controller->processTurn();
 		controller->draw();
 	}
+
+	controller->displayDeathMessage();
+	getch();
 
 	delete controller;
 

@@ -16,12 +16,17 @@ GameController::GameController()
 	worldMap->getDungeonByName("Right dungeon")->setLevel(1, new Map("testMap_150x50.txt"));
 #endif
 	Map *rightDungeonSecondLevel = worldMap->getDungeonByName("Right dungeon")->getLevel(1);
-	//rightDungeonSecondLevel->addActor(new Actor("AI-driven orc!", "humanoid", 'o', map_x / 2, map_y / 2, 10, 5, new CowardlyAI(), rightDungeonSecondLevel));
+	Actor *orc = new Actor("AI-driven orc!", "humanoid", 'o', map_x / 2, map_y / 2, 10, 5, new AggressiveAI(), rightDungeonSecondLevel);
+	Weapon *orcishWeapon = new Weapon("Orcish spear", 3);
+	orc->getInventory()->addItem(orcishWeapon);
+	orc->getInventory()->equipWeapon(orcishWeapon);
+	rightDungeonSecondLevel->addActor(orc);
+
 	rightDungeonSecondLevel->addItem(new Weapon("THE AXE", 6, map_x / 2, map_y / 2));
 
-	player = new Actor("player", "player", '@', map_x / 2, map_y / 2, 1, 7, new PlayerAI(), worldMap);
+	player = new Actor("player", "player", '@', map_x / 2, map_y / 2, 6, 7, new PlayerAI(), worldMap);
 	player->setSeen(true);
-	player->getInventory()->addItem(new Weapon("THE SWORD", 5));
+	player->getInventory()->addItem(new Weapon("THE SWORD", 3));
 	player->getInventory()->addItem(new Armor("THE ARMOR", 5));
 	currentDungeon = nullptr;
 	currentMap = worldMap;
@@ -117,9 +122,20 @@ void GameController::processTurn()
 	}
 
 	currentMap->processActorsTurns(player);
+	ui->clearStatsBar();
+	ui->writeToStatsBar("HP:" + std::to_string(player->getHP()));
+	if (player->getHP() <= 0)
+		state = over;
 }
 
 bool GameController::gameIsOver()
 {
 	return state == over;
+}
+
+void GameController::displayDeathMessage()
+{
+	Map *death = new Map("YOU_DIED.txt");
+	death->setEverythingSeen(true);
+	death->drawWallsInRed(status_bar_y);
 }

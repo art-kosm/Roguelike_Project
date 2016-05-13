@@ -72,6 +72,18 @@ void Map::draw(int indent)
 	drawActors(indent);
 }
 
+void Map::drawWallsInRed(int indent)
+{
+	int color = 1;
+	init_pair(color, COLOR_RED, COLOR_BLACK);
+	attron(COLOR_PAIR(color));
+	for (int i = 0; i < map_y; i++)
+		for (int j = 0; j < map_x; j++)
+			if (!terrain[i][j].getPassability())
+				terrain[i][j].draw(j, i + indent);
+	attroff(COLOR_PAIR(color));
+}
+
 void Map::addDungeon(Dungeon *dungeon)
 {
 	dungeons.push_back(dungeon);
@@ -121,6 +133,13 @@ void Map::drawActors(int indent)
 {
 	for (int i = 0; (unsigned)i < actors.size(); i++)
 		actors.at(i)->draw(indent);
+}
+
+void Map::removeDead()
+{
+	for (int i = 0; (unsigned)i < actors.size(); i++)
+		if (!actors.at(i)->isAlive())
+			actors.erase(actors.begin() + i);
 }
 
 void Map::setTerrainTile(Terrain element, int x, int y)
@@ -212,6 +231,7 @@ void Map::setEverythingSeen(bool status)
 
 void Map::processActorsTurns(Actor *player)
 {
+	removeDead();
 	for (int i = 0; (unsigned)i < actors.size(); i++)
 		actors.at(i)->takeTurn(player);
 }

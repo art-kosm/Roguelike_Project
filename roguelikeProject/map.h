@@ -32,6 +32,7 @@ public:
 	Map(const string &filename);
 	~Map();
 	void draw(int indent = 0);
+	void drawWallsInRed(int indent = 0);
 	void addDungeon(Dungeon *dungeon);
 	void addEntrance(Entrance *entrance);
 	void addActor(Actor *actor);
@@ -68,4 +69,6 @@ private:
 	void drawEntrances(int indent = 0);
 	void drawItems(int indent = 0);
 	void drawActors(int indent = 0);
+
+	void removeDead();
 };

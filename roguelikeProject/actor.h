@@ -33,6 +33,7 @@ public:
 	Inventory *getInventory();
 	Item *pickUpItem();
 	void dropItem(Item *item);
+	void attack(Actor *actor);
 
 private:
 	int hp;

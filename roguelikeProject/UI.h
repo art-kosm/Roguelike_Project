@@ -19,6 +19,7 @@ public:
 	void writeToStatusBar(const string &message);
 	void writeToStatsBar(const string &message);
 	void clearStatusBar();
+	void clearStatsBar();
 	void browseInventory(Actor *actor);
 
 private:

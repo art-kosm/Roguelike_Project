@@ -40,3 +40,13 @@ vector<Item *> Inventory::getItems()
 	return items;
 }
 
+Weapon *Inventory::getEquippedWeapon()
+{
+	return equippedWeapon;
+}
+
+Armor *Inventory::getEquippedArmor()
+{
+	return equippedArmor;
+}
+

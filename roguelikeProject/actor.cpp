@@ -55,8 +55,15 @@ void Actor::move(int x, int y)
 	if (x > map_x - 1 || x < 0 || y > map_y - 1 || y < 0)
 		return;
 
-	if (locatedOn->tileIsOccupied(x, y) || !locatedOn->tileIsPassable(x, y))
+	if (!locatedOn->tileIsPassable(x, y))
 		return;
+
+	Actor *actor = locatedOn->getActorOn(x, y);
+	if (actor != nullptr)
+	{
+		attack(actor);
+		return;
+	}
 
 	this->x = x;
 	this->y = y;
@@ -114,5 +121,10 @@ void Actor::dropItem(Item *item)
 	item->setY(y);
 	locatedOn->addItem(item);
 	inventory->removeItem(item);
+}
+
+void Actor::attack(Actor *actor)
+{
+	inventory->getEquippedWeapon()->useOn(actor);
 }
 

@@ -25,6 +25,7 @@ public:
 	void draw();
 	void processTurn();
 	bool gameIsOver();
+	void displayDeathMessage();
 
 private:
 	Map *worldMap;

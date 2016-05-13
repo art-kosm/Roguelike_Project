@@ -18,6 +18,8 @@ public:
 	void removeItem(Item *item);
 	bool hasItem(Item *item);
 	vector<Item *> getItems();
+	Weapon *getEquippedWeapon();
+	Armor *getEquippedArmor();
 
 private:
 	Weapon *equippedWeapon;
