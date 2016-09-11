@@ -70,7 +70,7 @@ void Pathfinding::calculateDijkstraMap(int destination_x, int destination_y, flo
         for (int i = 0; i < map_y; i++)
             for (int j = 0; j < map_x; j++)
                 if (map->getTerrainTileAt(j, i).getPassability() &&
-                        dijkstraMap[i][j] - dijkstraMap[minNeighborPos(j, i).second][minNeighborPos(j, i).first] >= 2)
+                    dijkstraMap[i][j] - dijkstraMap[minNeighborPos(j, i).second][minNeighborPos(j, i).first] >= 2)
                 {
                     dijkstraMap[i][j] = dijkstraMap[minNeighborPos(j, i).second][minNeighborPos(j, i).first] + 1;
                     changed = true;
@@ -96,7 +96,7 @@ pair<int, int> Pathfinding::minNeighborPos(int x, int y)
     pair<int, int> minPos(x, y);
 
     pair<int, int> neighborsPos[4] = {pair<int, int>(x, y - 1), pair<int, int>(x - 1, y),
-                                      pair<int, int>(x, y + 1), pair<int, int>(x + 1, y)};
+                                   pair<int, int>(x, y + 1), pair<int, int>(x + 1, y)};
 
     for (int i = 0; i < 4; i++)
     {
@@ -120,7 +120,7 @@ pair<int, int> Pathfinding::maxNeighborPos(int x, int y)
     pair<int, int> maxPos(x, y);
 
     pair<int, int> neighborsPos[4] = {pair<int, int>(x, y - 1), pair<int, int>(x - 1, y),
-                                      pair<int, int>(x, y + 1), pair<int, int>(x + 1, y)};
+                                   pair<int, int>(x, y + 1), pair<int, int>(x + 1, y)};
 
     for (int i = 0; i < 4; i++)
     {

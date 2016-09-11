@@ -15,24 +15,22 @@ SOURCES += main.cpp \
     AI.cpp \
     aggressiveAI.cpp \
     playerAI.cpp \
-    pathfinding.cpp \
     cowardlyAI.cpp \
     UI.cpp \
     item.cpp \
     weapon.cpp \
     armor.cpp \
-    inventory.cpp
+    inventory.cpp \
+    town.cpp \
+    citizenAI.cpp \
+    potion.cpp \
+    traderAI.cpp \
+    gradalis.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
 
 QMAKE_CXXFLAGS += -std=c++11
-
-
-win32: LIBS += -L$$PWD/../libs/pdc34dllw/ -lpdcurses
-
-INCLUDEPATH += $$PWD/../libs/pdc34dllw
-DEPENDPATH += $$PWD/../libs/pdc34dllw
 
 HEADERS += \
     generalConstants.h \
@@ -47,10 +45,22 @@ HEADERS += \
     AI.h \
     aggressiveAI.h \
     playerAI.h \
-    pathfinding.h \
     cowardlyAI.h \
     UI.h \
     item.h \
     weapon.h \
     armor.h \
-    inventory.h
+    inventory.h \
+    cellularAutomataGenerator.h \
+    town.h \
+    citizenAI.h \
+    potion.h \
+    traderAI.h \
+    gradalis.h
+
+unix|win32: LIBS += -L$$PWD/../../pd-curses/ -lpdcurses
+
+INCLUDEPATH += $$PWD/../../pd-curses
+DEPENDPATH += $$PWD/../../pd-curses
+
+DISTFILES +=

@@ -6,5 +6,6 @@ class PlayerAI : public AI
 {
 public:
     PlayerAI();
-    void takeTurn(Actor *actor, Actor *player);
+    void takeTurn(Actor *, Actor *);
+    int askPrice(Item *item);
 };

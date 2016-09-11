@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <curses.h>
 
 #include "gameController.h"
@@ -7,7 +8,9 @@
 using namespace generalConstants;
 
 int main()
-{
+{    
+    srand(time(0));
+
     initscr();
     resize_term(term_y, term_x);
     raw();
@@ -25,7 +28,7 @@ int main()
         controller->draw();
     }
 
-    controller->displayDeathMessage();
+    controller->displayScore();
     getch();
 
     delete controller;

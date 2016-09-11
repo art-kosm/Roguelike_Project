@@ -20,7 +20,8 @@ public:
     void writeToStatsBar(const string &message);
     void clearStatusBar();
     void clearStatsBar();
-    void browseInventory(Actor *actor);
+    void browseInventory(Actor *actor, Actor *partner = nullptr);
+    void updateStatsBar(Actor *player);
 
 private:
     WINDOW *statusBar;
@@ -32,5 +33,6 @@ private:
     void destroyWindow(WINDOW *window);
 
     void printInventory(Actor *actor);
+    void dropAnItem(Actor *actor, Item *currentItem);
 };
 

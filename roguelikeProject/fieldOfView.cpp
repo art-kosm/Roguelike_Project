@@ -1,9 +1,7 @@
 #include "fieldOfView.h"
 
 FieldOfView::FieldOfView()
-{
-
-}
+{}
 
 void FieldOfView::calculate(int x, int y, Map *map, int radius)
 {
@@ -37,8 +35,8 @@ void FieldOfView::calculate(int x, int y, Map *map, int radius)
 bool FieldOfView::lineOfSight(int x1, int y1, int x2, int y2, Map *map, int maxLength)
 {
     float length = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-    if (length > maxLength)
-        return false;
+        if (length > maxLength)
+            return false;
 
     const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
     if (steep)

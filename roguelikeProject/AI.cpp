@@ -1,20 +1,17 @@
 #include "AI.h"
 
 AI::AI()
-{
-
-}
+{}
 
 AI::~AI()
-{
+{}
 
+int AI::askPrice(Item *)
+{
+    return 0;
 }
 
-/*void AI::takeTurn(Actor *actor, Actor *player)
+string AI::talk()
 {
-    Map *map = actor->getMap();
-    if (FieldOfView::lineOfSight(actor->getX(), actor->getY(), player->getX(), player->getY(), map,
-                                 actor->getPerceptionRadius()))
-        actor->move(actor->getX() + 1, actor->getY());
-}*/
-
+    return "'...'\n";
+}

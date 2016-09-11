@@ -6,7 +6,6 @@
 #include "map.h"
 #include "fieldOfView.h"
 #include "aggressiveAI.h"
-#include "cowardlyAI.h"
 #include "playerAI.h"
 
 enum GameState
@@ -25,7 +24,7 @@ public:
     void draw();
     void processTurn();
     bool gameIsOver();
-    void displayDeathMessage();
+    void displayScore();
 
 private:
     Map *worldMap;
@@ -34,4 +33,12 @@ private:
     Map *currentMap;
     GameState state;
     UI *ui;
+    int score;
+
+    void initializeColors();
+    void enter();
+    void pickUp();
+    void talk();
+    Actor *getTraderAt(int x, int y);
+    Actor *getActorAt(int x, int y);
 };

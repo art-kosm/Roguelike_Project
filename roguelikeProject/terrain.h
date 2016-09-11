@@ -6,12 +6,12 @@ class Terrain : public Tile
 {
 public:
     Terrain();
-    Terrain(const string &name, string type, char symbol, bool isPassable, bool passesLight);
+    Terrain(const string &name, Type type, char symbol, bool isPassable/*, bool passesLight*/);
     bool getPassability();
-    void intiialize(const string &name, const string &type, char symbol, bool isPassable, bool passesLight);
+    void initialize(const string &name, Type type, char symbol, bool isPassable/*, bool passesLight*/);
 
 private:
     bool isPassable;
-    bool passesLight;
+    //bool passesLight;
 };
 

@@ -2,7 +2,6 @@
 
 #include "AI.h"
 
-class Actor;
 class AggressiveAI : public AI
 {
 public:

@@ -12,14 +12,10 @@ Entrance::Entrance(int x, int y, char symbol, Map *leadsFrom, Map *leadsTo, bool
     leadsTo(leadsTo),
     isSeen(isSeen),
     isRemembered(isRemembered)
-{
-}
+{}
 
 Entrance::~Entrance()
-{
-    /*if (leadsTo->getEntrancesNumber() == 1)
-        delete leadsTo;*/
-}
+{}
 
 void Entrance::draw(int indent)
 {
@@ -28,8 +24,13 @@ void Entrance::draw(int indent)
     if (!isSeen)
         attron(A_DIM);
 
+    if (symbol == 'O')
+        attron(COLOR_PAIR(2));
+
     mvaddch(y + indent, x, symbol);
     attroff(A_DIM);
+
+    attroff(COLOR_PAIR(2));
 }
 
 int Entrance::getX()

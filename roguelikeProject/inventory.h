@@ -13,8 +13,12 @@ class Inventory
 public:
     Inventory();
     void addItem(Item *item);
+
     void equipWeapon(Weapon *weapon);
     void equipArmor(Armor *armor);
+    void unequipWeapon();
+    void unequipArmor();
+
     void removeItem(Item *item);
     bool hasItem(Item *item);
     vector<Item *> getItems();
@@ -26,4 +30,3 @@ private:
     Armor *equippedArmor;
     vector<Item *> items;
 };
-

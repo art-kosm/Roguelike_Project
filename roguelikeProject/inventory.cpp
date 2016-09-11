@@ -1,13 +1,11 @@
 #include "inventory.h"
 
 Inventory::Inventory() : equippedWeapon(nullptr), equippedArmor(nullptr)
-{
-
-}
+{}
 
 void Inventory::addItem(Item *item)
 {
-    items.push_back(item);
+    items.insert(items.begin(), item);
 }
 
 void Inventory::equipWeapon(Weapon *weapon)
@@ -18,6 +16,16 @@ void Inventory::equipWeapon(Weapon *weapon)
 void Inventory::equipArmor(Armor *armor)
 {
     equippedArmor = armor;
+}
+
+void Inventory::unequipWeapon()
+{
+    equippedWeapon = nullptr;
+}
+
+void Inventory::unequipArmor()
+{
+    equippedArmor = nullptr;
 }
 
 void Inventory::removeItem(Item *item)
@@ -49,4 +57,3 @@ Armor *Inventory::getEquippedArmor()
 {
     return equippedArmor;
 }
-

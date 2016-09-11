@@ -12,14 +12,12 @@ class Map;
 class Dungeon
 {
 public:
-    Dungeon();
-    Dungeon(const string &name, int depth, char symbol, int current, int x, int y);
+    Dungeon(int id = -1, const string &name = "Default dungeon", int depth = 5, char symbol = '*', int current = 0, int x = 0, int y = 0);
     ~Dungeon();
+    int getId();
     Map *getFirstLevel();
     Map *getCurrentLevel();
     Map *getLevel(int depth);
-    //Doesn't work on first one now
-    void setLevel(int depth, Map *level);
     void draw();
     void connectLevels();
     const string &getName();
@@ -28,6 +26,7 @@ public:
     int getY();
 
 private:
+    int id;
     string name;
     int depth;
     char symbol;

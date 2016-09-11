@@ -1,46 +1,86 @@
+#include <limits>
 #include "map.h"
+#include "town.h"
+#include "aggressiveAI.h"
 
-Map::Map() : window(stdscr)
+Map::Map(const string &filename) : window(stdscr), name("Some map"), flooded(map_x)
 {
     terrain = new Terrain *[map_y];
     for (int i = 0; i < map_y; i++)
         terrain[i] = new Terrain[map_x];
 
-    for (int i = 0; i < map_y; i++)
-        for (int j = 0; j < map_x; j++)
-            terrain[i][j].intiialize("Stone floor", "floor", '.', true, true);
+    ifstream file(filename);
 
-    pathfinding = new Pathfinding(this);
-    name = "Some map";
+    if (file.is_open())
+    {
+        int id = 0;
+
+        for (int i = 0; i < map_y; i++)
+            for (int j = 0; j < map_x; j++)
+            {
+                char ch = ' ';
+                file >> ch;
+                switch (ch)
+                {
+                case '.':
+                    terrain[i][j].initialize("Grass", GRASS, '.', true);
+                    break;
+
+                case '#':
+                    terrain[i][j].initialize("Wall", WALL, '#', false);
+                    break;
+
+                case '*':
+                {
+                    int num = rand() % 8;
+                    while (dungeonNames[num] == "")
+                        num = rand() % 8;
+                    addDungeon(new Dungeon(id, dungeonNames[num], 9, '*', 0, j, i));
+                    dungeonNames[num] = "";
+                    id++;
+                } break;
+
+                case '~':
+                    terrain[i][j].initialize("Water",  WATER, '~', true);
+                    break;
+
+                case 'O':
+                {
+                    int num = rand() % 9;
+                    while (townNames[num] == "")
+                        num = rand() % 9;
+                    addTown(new Town(townNames[num]), j, i);
+                    townNames[num] = "";
+                    id++;
+                } break;
+
+                default:
+                    terrain[i][j].initialize("Stone floor", FLOOR, '.', true);
+                    break;
+                }
+            }
+        file.close();
+    }
+    else
+        for (int i = 0; i < map_y; i++)
+            for (int j = 0; j < map_x; j++)
+                terrain[i][j].initialize("Stone floor", FLOOR, '.', true);
 }
 
-Map::Map(const string &filename)
+Map::Map(int **generated, bool waterWalls) : name("Some map"), flooded(map_x)
 {
-    ifstream file(filename);
-    if (!file.is_open())
-    {
-        Map();
-        return;
-    }
-
     terrain = new Terrain *[map_y];
     for (int i = 0; i < map_y; i++)
         terrain[i] = new Terrain[map_x];
 
     for (int i = 0; i < map_y; i++)
         for (int j = 0; j < map_x; j++)
-        {
-            char ch = ' ';
-            file >> ch;
-            if (ch == '#')
-                terrain[i][j].intiialize("Wall", "wall", '#', false, false);
+            if (generated[i][j] == 0)
+                terrain[i][j].initialize("Stone floor", FLOOR, '.', true);
+            else if (waterWalls)
+                terrain[i][j].initialize("Water",  WATER, '~', true);
             else
-                terrain[i][j].intiialize("Stone floor", "floor", '.', true, true);
-        }
-    file.close();
-
-    pathfinding = new Pathfinding(this);
-    name = "Some map";
+                terrain[i][j].initialize("Wall", WALL, '#', false);
 }
 
 Map::~Map()
@@ -49,19 +89,20 @@ Map::~Map()
         delete[] terrain[i];
     delete[] terrain;
 
-    for (int i = 0; (unsigned)i < dungeons.size(); i++)
+    for (int i = 0; (unsigned) i < dungeons.size(); i++)
         delete dungeons.at(i);
 
-    for (int i = 0; (unsigned)i < entrances.size(); i++)
+    for (int i = 0; (unsigned) i < towns.size(); i++)
+        delete towns.at(i);
+
+    for (int i = 0; (unsigned) i < entrances.size(); i++)
         delete entrances.at(i);
 
-    for (int i = 0; (unsigned)i < actors.size(); i++)
+    for (int i = 0; (unsigned) i < actors.size(); i++)
         delete actors.at(i);
 
-    for (int i = 0; (unsigned)i < items.size(); i++)
+    for (int i = 0; (unsigned) i < items.size(); i++)
         delete items.at(i);
-
-    delete pathfinding;
 }
 
 void Map::draw(int indent)
@@ -72,24 +113,25 @@ void Map::draw(int indent)
     drawActors(indent);
 }
 
-void Map::drawWallsInRed(int indent)
-{
-    int color = 1;
-    init_pair(color, COLOR_RED, COLOR_BLACK);
-    attron(COLOR_PAIR(color));
-    for (int i = 0; i < map_y; i++)
-        for (int j = 0; j < map_x; j++)
-            if (!terrain[i][j].getPassability())
-                terrain[i][j].draw(j, i + indent);
-    attroff(COLOR_PAIR(color));
-}
-
 void Map::addDungeon(Dungeon *dungeon)
 {
     dungeons.push_back(dungeon);
-    addEntrance(new Entrance(dungeon->getX(), dungeon->getY(), dungeon->getSymbol(), this, dungeon->getFirstLevel()));
-    dungeon->getFirstLevel()->addEntrance(new Entrance(map_x / 2, map_y / 2 + 2, '<', dungeon->getFirstLevel(), this));
+
+    Map *dungeonFirstLevel = dungeon->getFirstLevel();
+    addEntrance(new Entrance(dungeon->getX(), dungeon->getY(), dungeon->getSymbol(), this, dungeonFirstLevel));
+
+    pair<int, int> exit = dungeonFirstLevel->findExitPosition();
+    dungeonFirstLevel->addEntrance(new Entrance(exit.first, exit.second, '<', dungeonFirstLevel, this));
+
     dungeon->connectLevels();
+}
+
+void Map::addTown(Town *town, int x, int y)
+{
+    towns.push_back(town);
+
+    addEntrance(new Entrance(x, y, 'O', this, town));
+    town->addEntrance(new Entrance(0, town->findExitPosition().second, '<', town, this));
 }
 
 void Map::addEntrance(Entrance *entrance)
@@ -135,11 +177,33 @@ void Map::drawActors(int indent)
         actors.at(i)->draw(indent);
 }
 
-void Map::removeDead()
+int Map::removeDead(string *message)
 {
+    int points = 0;
+
     for (int i = 0; (unsigned)i < actors.size(); i++)
-        if (!actors.at(i)->isAlive())
+    {
+        Actor *actor = actors.at(i);
+        if (!actor->isAlive())
+        {
+            if (actor->getType() != PLAYER)
+                *message += actor->getName() + " defeated! ";
+
+            vector<Item *> inventory = actor->getInventory()->getItems();
+            for (int i = 0; (unsigned) i < inventory.size(); i++)
+            {
+                Item *item = inventory.at(i);
+                item->setX(actor->getX());
+                item->setY(actor->getY());
+                addItem(item);
+            }
+
             actors.erase(actors.begin() + i);
+            points += 1;
+        }
+    }
+
+    return points;
 }
 
 void Map::setTerrainTile(Terrain element, int x, int y)
@@ -187,10 +251,10 @@ Entrance *Map::getEntranceByLeadsTo(Map *leadsTo)
     return nullptr;
 }
 
-Dungeon *Map::getDungeonByName(const std::string &name)
+Dungeon *Map::getDungeonById(int id)
 {
     for (int i = 0; (unsigned)i < dungeons.size(); i++)
-        if (dungeons.at(i)->getName() == name)
+        if (dungeons.at(i)->getId() == id)
             return dungeons.at(i);
     return nullptr;
 }
@@ -198,8 +262,11 @@ Dungeon *Map::getDungeonByName(const std::string &name)
 Actor *Map::getActorOn(int x, int y)
 {
     for (int i = 0; (unsigned)i < actors.size(); i++)
-        if (actors.at(i)->getX() == x && actors.at(i)->getY() == y)
-            return actors.at(i);
+    {
+        Actor *actor = actors.at(i);
+        if (actor->getX() == x && actor->getY() == y)
+            return actor;
+    }
     return nullptr;
 }
 
@@ -216,6 +283,11 @@ bool Map::tileIsPassable(int x, int y)
     return terrain[y][x].getPassability();
 }
 
+bool Map::isWater(int x, int y)
+{
+    return terrain[y][x].getType() == WATER;
+}
+
 void Map::setEverythingSeen(bool status)
 {
     for (int i = 0; i < map_y; i++)
@@ -229,16 +301,25 @@ void Map::setEverythingSeen(bool status)
         items.at(i)->setSeen(status);
 }
 
-void Map::processActorsTurns(Actor *player)
+int Map::processActorsTurns(Actor *player, string *message)
 {
-    removeDead();
-    for (int i = 0; (unsigned)i < actors.size(); i++)
-        actors.at(i)->takeTurn(player);
-}
+    if (flooded < map_x && flooded >= 0)
+    {
+        for (int i = 0; i < map_y; i++)
+        {
+            terrain[i][flooded].initialize("Water",  WATER, '~', true);
+            Actor *actor = getActorOn(flooded, i);
+            if (actor != nullptr)
+                actor->takeDamage(std::numeric_limits<int>::max());
+        }
+        flooded--;
+    }
 
-Pathfinding *Map::getPathfinding()
-{
-    return pathfinding;
+    int collectedPoints = removeDead(message);
+    for (int i = 0; (unsigned) i < actors.size(); i++)
+        actors.at(i)->takeTurn(player);
+
+    return collectedPoints;
 }
 
 const std::string &Map::getName()
@@ -266,4 +347,111 @@ void Map::removeItem(Item *item)
             items.erase(items.begin() + i);
 }
 
+pair<int, int> Map::findEntrancePosition()
+{
+    for (int i = map_x + map_y - 1; i >= 0; i--)
+        for (int x = 0; x <= i; x++)
+            if (x < map_x && i - x < map_y)
+                if (tileIsPassable(x, i - x) && !isWater(x, i - x))
+                    return {x, i - x};
+    return {0, 0};
+}
 
+pair<int, int> Map::findExitPosition()
+{
+    for (int i = 0; i < map_x + map_y; i++)
+        for (int x = 0; x <= i; x++)
+            if (x < map_x && i - x < map_y)
+                if (tileIsPassable(x, i - x) && !isWater(x, i - x))
+                    return {x, i - x};
+    return {0, 0};
+}
+
+void Map::addEnemies(int number, bool withDragons)
+{
+    int humanoids = 0;
+    int dragons = 0;
+
+    if (withDragons)
+    {
+        humanoids = number / 2;
+        dragons = number / 2;
+    }
+    else
+        humanoids = number;
+
+    for (int i = 0; i < humanoids; i++)
+    {
+        pair<int, int> tile = findPassableTile();
+
+        int x = tile.first;
+        int y = tile.second;
+
+        string enemyName = humanoidNames[rand() % 3];
+        char enemyLetter = tolower(enemyName.at(0));
+        int enemyHp = rand() % 3 + 9;
+        int enemyPerception = rand() % 2 + 4;
+
+        Actor *enemy = new Actor(enemyName, HUMANOID, enemyLetter, x, y, enemyHp,
+                                 enemyPerception, new AggressiveAI(), this);
+        Weapon *enemyWeapon = new Weapon("ENEMY SPEAR", rand() % 2 + 2);
+        enemy->getInventory()->addItem(enemyWeapon);
+        enemy->getInventory()->equipWeapon(enemyWeapon);
+        addActor(enemy);
+    }
+
+    for (int i = 0; i < dragons; i++)
+    {
+        pair<int, int> tile = findPassableTile();
+
+        int x = tile.first;
+        int y = tile.second;
+
+        string enemyName = dragonNames[rand() % 3];
+        char enemyLetter = tolower(enemyName.at(0));
+        int enemyHp = rand() % 3 + 15;
+        int enemyPerception = rand() % 3 + 6;
+
+        Actor *enemy = new Actor(enemyName, DRAGON, enemyLetter, x, y, enemyHp,
+                                 enemyPerception, new AggressiveAI(), this);
+        Weapon *enemyWeapon = new Weapon("POISONED CLAW", rand() % 2 + 5);
+        enemy->getInventory()->addItem(enemyWeapon);
+        enemy->getInventory()->equipWeapon(enemyWeapon);
+        addActor(enemy);
+    }
+}
+
+pair<int, int> Map::findPassableTile()
+{
+    int x = rand() % (map_x - 1);
+    int y = rand() % (map_y - 1);
+
+    while (!tileIsPassable(x, y) || isWater(x, y))
+    {
+        if (x < map_x - 1)
+            x++;
+        else if (y < map_y - 1)
+        {
+            x = 0;
+            y++;
+        }
+        else
+            x = y = 0;
+    }
+
+    return {x, y};
+}
+
+void Map::flood()
+{
+    flooded--;
+}
+
+bool Map::isEntrance(int x, int y)
+{
+    int size = entrances.size();
+    for (int i = 0; i < size; i++)
+        if (entrances.at(i)->getX() == x && entrances.at(i)->getY() == y)
+            return true;
+    return false;
+}
