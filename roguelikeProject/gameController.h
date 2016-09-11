@@ -11,8 +11,8 @@
 
 enum GameState
 {
-	playing,
-	over
+    playing,
+    over
 };
 
 class Actor;
@@ -20,18 +20,18 @@ class Dungeon;
 class GameController
 {
 public:
-	GameController();
-	~GameController();
-	void draw();
-	void processTurn();
-	bool gameIsOver();
-	void displayDeathMessage();
+    GameController();
+    ~GameController();
+    void draw();
+    void processTurn();
+    bool gameIsOver();
+    void displayDeathMessage();
 
 private:
-	Map *worldMap;
-	Actor *player;
-	Dungeon *currentDungeon;
-	Map *currentMap;
-	GameState state;
-	UI *ui;
+    Map *worldMap;
+    Actor *player;
+    Dungeon *currentDungeon;
+    Map *currentMap;
+    GameState state;
+    UI *ui;
 };

@@ -5,6 +5,6 @@
 class PlayerAI : public AI
 {
 public:
-	PlayerAI();
-	void takeTurn(Actor *actor, Actor *player);
+    PlayerAI();
+    void takeTurn(Actor *actor, Actor *player);
 };

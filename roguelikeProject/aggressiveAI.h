@@ -6,6 +6,6 @@ class Actor;
 class AggressiveAI : public AI
 {
 public:
-	AggressiveAI();
-	void takeTurn(Actor *actor, Actor *player);
+    AggressiveAI();
+    void takeTurn(Actor *actor, Actor *player);
 };

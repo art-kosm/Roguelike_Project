@@ -7,24 +7,24 @@ class Map;
 class Entrance
 {
 public:
-	Entrance();
-	Entrance(int x, int y, char symbol, Map *leadsFrom, Map *leadsTo, bool isSeen = false, bool isRemembered = false);
-	~Entrance();
-	void draw(int indent = 0);
-	int getX();
-	int getY();
-	Map *getLeadsTo();
-	Map *getLeadsFrom();
-	void setSeen(bool status);
-	void setLeadsTo(Map *map);
+    Entrance();
+    Entrance(int x, int y, char symbol, Map *leadsFrom, Map *leadsTo, bool isSeen = false, bool isRemembered = false);
+    ~Entrance();
+    void draw(int indent = 0);
+    int getX();
+    int getY();
+    Map *getLeadsTo();
+    Map *getLeadsFrom();
+    void setSeen(bool status);
+    void setLeadsTo(Map *map);
 
 protected:
-	int x;
-	int y;
-	char symbol;
-	Map *leadsFrom;
-	Map *leadsTo;
-	bool isSeen;
-	bool isRemembered;
+    int x;
+    int y;
+    char symbol;
+    Map *leadsFrom;
+    Map *leadsTo;
+    bool isSeen;
+    bool isRemembered;
 };
 

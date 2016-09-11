@@ -7,7 +7,7 @@ class Actor;
 class AI
 {
 public:
-	AI();
-	virtual ~AI();
-	virtual void takeTurn(Actor *actor, Actor *player) = 0;
+    AI();
+    virtual ~AI();
+    virtual void takeTurn(Actor *actor, Actor *player) = 0;
 };

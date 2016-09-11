@@ -5,62 +5,62 @@ Entrance::Entrance() : x(0), y(0), symbol('>'), leadsFrom(nullptr), leadsTo(null
 }
 
 Entrance::Entrance(int x, int y, char symbol, Map *leadsFrom, Map *leadsTo, bool isSeen, bool isRemembered) :
-	x(x),
-	y(y),
-	symbol(symbol),
-	leadsFrom(leadsFrom),
-	leadsTo(leadsTo),
-	isSeen(isSeen),
-	isRemembered(isRemembered)
+    x(x),
+    y(y),
+    symbol(symbol),
+    leadsFrom(leadsFrom),
+    leadsTo(leadsTo),
+    isSeen(isSeen),
+    isRemembered(isRemembered)
 {
 }
 
 Entrance::~Entrance()
 {
-	/*if (leadsTo->getEntrancesNumber() == 1)
-		delete leadsTo;*/
+    /*if (leadsTo->getEntrancesNumber() == 1)
+        delete leadsTo;*/
 }
 
 void Entrance::draw(int indent)
 {
-	if (!isRemembered)
-		return;
-	if (!isSeen)
-		attron(A_DIM);
+    if (!isRemembered)
+        return;
+    if (!isSeen)
+        attron(A_DIM);
 
-	mvaddch(y + indent, x, symbol);
-	attroff(A_DIM);
+    mvaddch(y + indent, x, symbol);
+    attroff(A_DIM);
 }
 
 int Entrance::getX()
 {
-	return x;
+    return x;
 }
 
 int Entrance::getY()
 {
-	return y;
+    return y;
 }
 
 Map *Entrance::getLeadsTo()
 {
-	return leadsTo;
+    return leadsTo;
 }
 
 Map *Entrance::getLeadsFrom()
 {
-	return leadsFrom;
+    return leadsFrom;
 }
 
 void Entrance::setSeen(bool status)
 {
-	isSeen = status;
-	if (isSeen)
-		isRemembered = true;
+    isSeen = status;
+    if (isSeen)
+        isRemembered = true;
 }
 
 void Entrance::setLeadsTo(Map *map)
 {
-	leadsTo = map;
+    leadsTo = map;
 }
 

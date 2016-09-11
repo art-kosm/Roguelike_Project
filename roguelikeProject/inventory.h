@@ -11,19 +11,19 @@ using std::vector;
 class Inventory
 {
 public:
-	Inventory();
-	void addItem(Item *item);
-	void equipWeapon(Weapon *weapon);
-	void equipArmor(Armor *armor);
-	void removeItem(Item *item);
-	bool hasItem(Item *item);
-	vector<Item *> getItems();
-	Weapon *getEquippedWeapon();
-	Armor *getEquippedArmor();
+    Inventory();
+    void addItem(Item *item);
+    void equipWeapon(Weapon *weapon);
+    void equipArmor(Armor *armor);
+    void removeItem(Item *item);
+    bool hasItem(Item *item);
+    vector<Item *> getItems();
+    Weapon *getEquippedWeapon();
+    Armor *getEquippedArmor();
 
 private:
-	Weapon *equippedWeapon;
-	Armor *equippedArmor;
-	vector<Item *> items;
+    Weapon *equippedWeapon;
+    Armor *equippedArmor;
+    vector<Item *> items;
 };
 
