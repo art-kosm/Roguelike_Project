@@ -30,14 +30,14 @@ void Inventory::unequipArmor()
 
 void Inventory::removeItem(Item *item)
 {
-    for (int i = 0; (unsigned)i < items.size(); i++)
+    for (int i = 0; (unsigned) i < items.size(); i++)
         if (items.at(i) == item)
             items.erase(items.begin() + i);
 }
 
 bool Inventory::hasItem(Item *item)
 {
-    for (int i = 0; (unsigned)i < items.size(); i++)
+    for (int i = 0; (unsigned) i < items.size(); i++)
         if (items.at(i) == item)
             return true;
     return false;

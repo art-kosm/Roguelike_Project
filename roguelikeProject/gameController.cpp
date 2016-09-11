@@ -57,14 +57,49 @@ void GameController::processTurn()
     case 2:
         player->move(player->getX(), player->getY() + 1);
         break;
+
     case 3:
         player->move(player->getX(), player->getY() - 1);
         break;
+
     case 4:
         player->move(player->getX() - 1, player->getY());
         break;
+
     case 5:
         player->move(player->getX() + 1, player->getY());
+        break;
+
+    case '1':
+        player->move(player->getX() - 1, player->getY() + 1);
+        break;
+
+    case '2':
+        player->move(player->getX(), player->getY() + 1);
+        break;
+
+    case '3':
+        player->move(player->getX() + 1, player->getY() + 1);
+        break;
+
+    case '4':
+        player->move(player->getX() - 1, player->getY());
+        break;
+
+    case '6':
+        player->move(player->getX() + 1, player->getY());
+        break;
+
+    case '7':
+        player->move(player->getX() - 1, player->getY() - 1);
+        break;
+
+    case '8':
+        player->move(player->getX(), player->getY() - 1);
+        break;
+
+    case '9':
+        player->move(player->getX() + 1, player->getY() - 1);
         break;
 
     case 'e':
@@ -98,25 +133,11 @@ void GameController::processTurn()
         break;
 
     case 'q':
-        ui->writeToStatusBar("Quit? (y/n)");
-        while (true)
-        {
-            char command = getch();
-            switch (command)
-            {
-            case 'y':
-                state = over;
-                ui->clearStatusBar();
-                return;
+        tryToQuit();
+        break;
 
-            case 'n':
-                ui->clearStatusBar();
-                return;
-
-            default:
-                break;
-            }
-        }
+    default:
+        break;
     }
 
     string *message = new string();
@@ -233,6 +254,14 @@ void GameController::talk()
         trader = getTraderAt(x, y - 1);
     if (trader == nullptr)
         trader = getTraderAt(x - 1, y);
+    if (trader == nullptr)
+        trader = getTraderAt(x + 1, y + 1);
+    if (trader == nullptr)
+        trader = getTraderAt(x + 1, y - 1);
+    if (trader == nullptr)
+        trader = getTraderAt(x - 1, y + 1);
+    if (trader == nullptr)
+        trader = getTraderAt(x - 1, y - 1);
 
     if (trader != nullptr)
     {
@@ -264,6 +293,14 @@ void GameController::talk()
             actor = getActorAt(x, y - 1);
         if (actor == nullptr)
             actor = getActorAt(x - 1, y);
+        if (actor == nullptr)
+            actor = getActorAt(x + 1, y + 1);
+        if (actor == nullptr)
+            actor = getActorAt(x + 1, y - 1);
+        if (actor == nullptr)
+            actor = getActorAt(x - 1, y + 1);
+        if (actor == nullptr)
+            actor = getActorAt(x - 1, y - 1);
 
         if (actor != nullptr)
             ui->writeToStatusBar(actor->talk());
@@ -290,4 +327,27 @@ Actor *GameController::getActorAt(int x, int y)
             return actor;
 
    return nullptr;
+}
+
+void GameController::tryToQuit()
+{
+    ui->writeToStatusBar("Quit? (y/n)");
+    while (true)
+    {
+        char command = getch();
+        switch (command)
+        {
+        case 'y':
+            state = over;
+            ui->clearStatusBar();
+            return;
+
+        case 'n':
+            ui->clearStatusBar();
+            return;
+
+        default:
+            break;
+        }
+    }
 }

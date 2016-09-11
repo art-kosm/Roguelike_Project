@@ -41,4 +41,5 @@ private:
     void talk();
     Actor *getTraderAt(int x, int y);
     Actor *getActorAt(int x, int y);
+    void tryToQuit();
 };

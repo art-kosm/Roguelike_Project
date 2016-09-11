@@ -32,6 +32,7 @@ public:
     Map(int **generated, bool waterWalls);
     virtual ~Map();
     void draw(int indent = 0);
+    void drawWallsInRed(int indent = 0);
 
     void addDungeon(Dungeon *dungeon);
     void addTown(Town *town, int x, int y);

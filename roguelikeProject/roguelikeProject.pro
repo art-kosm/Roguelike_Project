@@ -27,9 +27,6 @@ SOURCES += main.cpp \
     traderAI.cpp \
     gradalis.cpp
 
-include(deployment.pri)
-qtcAddDeployment()
-
 QMAKE_CXXFLAGS += -std=c++11
 
 HEADERS += \
@@ -58,9 +55,7 @@ HEADERS += \
     traderAI.h \
     gradalis.h
 
-unix|win32: LIBS += -L$$PWD/../../pd-curses/ -lpdcurses
+unix|win32: LIBS += -L$$PWD/../libs/pdc34dllw/ -lpdcurses
 
-INCLUDEPATH += $$PWD/../../pd-curses
-DEPENDPATH += $$PWD/../../pd-curses
-
-DISTFILES +=
+INCLUDEPATH += $$PWD/../libs/pdc34dllw
+DEPENDPATH += $$PWD/../libs/pdc34dllw

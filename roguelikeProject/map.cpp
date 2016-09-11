@@ -113,6 +113,16 @@ void Map::draw(int indent)
     drawActors(indent);
 }
 
+void Map::drawWallsInRed(int indent)
+{
+    attron(COLOR_PAIR(3));
+    for (int i = 0; i < map_y; i++)
+        for (int j = 0; j < map_x; j++)
+            if (!terrain[i][j].getPassability())
+                terrain[i][j].draw(j, i + indent);
+    attroff(COLOR_PAIR(3));
+}
+
 void Map::addDungeon(Dungeon *dungeon)
 {
     dungeons.push_back(dungeon);
@@ -136,7 +146,7 @@ void Map::addTown(Town *town, int x, int y)
 
 void Map::addEntrance(Entrance *entrance)
 {
-    for (int i = 0; (unsigned)i < entrances.size(); i++)
+    for (int i = 0; (unsigned) i < entrances.size(); i++)
         if (entrances.at(i) == entrance)
             return;
     entrances.push_back(entrance);
@@ -161,19 +171,19 @@ void Map::drawTerrain(int indent)
 
 void Map::drawEntrances(int indent)
 {
-    for (int i = 0; (unsigned)i < entrances.size(); i++)
+    for (int i = 0; (unsigned) i < entrances.size(); i++)
         entrances.at(i)->draw(indent);
 }
 
 void Map::drawItems(int indent)
 {
-    for (int i = 0; (unsigned)i < items.size(); i++)
+    for (int i = 0; (unsigned) i < items.size(); i++)
         items.at(i)->draw(indent);
 }
 
 void Map::drawActors(int indent)
 {
-    for (int i = 0; (unsigned)i < actors.size(); i++)
+    for (int i = 0; (unsigned) i < actors.size(); i++)
         actors.at(i)->draw(indent);
 }
 
@@ -181,7 +191,7 @@ int Map::removeDead(string *message)
 {
     int points = 0;
 
-    for (int i = 0; (unsigned)i < actors.size(); i++)
+    for (int i = 0; (unsigned) i < actors.size(); i++)
     {
         Actor *actor = actors.at(i);
         if (!actor->isAlive())
@@ -219,13 +229,13 @@ Terrain Map::getTerrainTileAt(int x, int y)
 void Map::setTileSeen(int x, int y, bool status)
 {
     terrain[y][x].setSeen(status);
-    for (int i = 0; (unsigned)i < entrances.size(); i++)
+    for (int i = 0; (unsigned) i < entrances.size(); i++)
         if (entrances.at(i)->getX() == x && entrances.at(i)->getY() == y)
             entrances.at(i)->setSeen(status);
-    for (int i = 0; (unsigned)i < actors.size(); i++)
+    for (int i = 0; (unsigned) i < actors.size(); i++)
         if (actors.at(i)->getX() == x && actors.at(i)->getY() == y)
             actors.at(i)->setSeen(status);
-    for (int i = 0; (unsigned)i < items.size(); i++)
+    for (int i = 0; (unsigned) i < items.size(); i++)
         if (items.at(i)->getX() == x && items.at(i)->getY() == y)
             items.at(i)->setSeen(status);
 }
@@ -237,7 +247,7 @@ int Map::getEntrancesNumber()
 
 Entrance *Map::getEntranceOn(int x, int y)
 {
-    for (int i = 0; (unsigned)i < entrances.size(); i++)
+    for (int i = 0; (unsigned) i < entrances.size(); i++)
         if (entrances.at(i)->getX() == x && entrances.at(i)->getY() == y)
             return entrances.at(i);
     return nullptr;
@@ -245,7 +255,7 @@ Entrance *Map::getEntranceOn(int x, int y)
 
 Entrance *Map::getEntranceByLeadsTo(Map *leadsTo)
 {
-    for (int i = 0; (unsigned)i < entrances.size(); i++)
+    for (int i = 0; (unsigned) i < entrances.size(); i++)
         if (entrances.at(i)->getLeadsTo() == leadsTo)
             return entrances.at(i);
     return nullptr;
@@ -253,7 +263,7 @@ Entrance *Map::getEntranceByLeadsTo(Map *leadsTo)
 
 Dungeon *Map::getDungeonById(int id)
 {
-    for (int i = 0; (unsigned)i < dungeons.size(); i++)
+    for (int i = 0; (unsigned) i < dungeons.size(); i++)
         if (dungeons.at(i)->getId() == id)
             return dungeons.at(i);
     return nullptr;
@@ -261,7 +271,7 @@ Dungeon *Map::getDungeonById(int id)
 
 Actor *Map::getActorOn(int x, int y)
 {
-    for (int i = 0; (unsigned)i < actors.size(); i++)
+    for (int i = 0; (unsigned) i < actors.size(); i++)
     {
         Actor *actor = actors.at(i);
         if (actor->getX() == x && actor->getY() == y)
@@ -272,7 +282,7 @@ Actor *Map::getActorOn(int x, int y)
 
 bool Map::tileIsOccupied(int x, int y)
 {
-    for (int i = 0; (unsigned)i < actors.size(); i++)
+    for (int i = 0; (unsigned) i < actors.size(); i++)
         if (actors.at(i)->getX() == x && actors.at(i)->getY() == y)
             return true;
     return false;
@@ -293,11 +303,11 @@ void Map::setEverythingSeen(bool status)
     for (int i = 0; i < map_y; i++)
         for (int j = 0; j < map_x; j++)
             terrain[i][j].setSeen(status);
-    for (int i = 0; (unsigned)i < entrances.size(); i++)
+    for (int i = 0; (unsigned) i < entrances.size(); i++)
         entrances.at(i)->setSeen(status);
-    for (int i = 0; (unsigned)i < actors.size(); i++)
+    for (int i = 0; (unsigned) i < actors.size(); i++)
         actors.at(i)->setSeen(status);
-    for (int i = 0; (unsigned)i < items.size(); i++)
+    for (int i = 0; (unsigned) i < items.size(); i++)
         items.at(i)->setSeen(status);
 }
 
@@ -334,7 +344,7 @@ void Map::setName(const std::string &name)
 
 Item *Map::getItemAt(int x, int y)
 {
-    for (int i = 0; (unsigned)i < items.size(); i++)
+    for (int i = 0; (unsigned) i < items.size(); i++)
         if (items.at(i)->getX() == x && items.at(i)->getY() == y)
             return items.at(i);
     return nullptr;
@@ -342,7 +352,7 @@ Item *Map::getItemAt(int x, int y)
 
 void Map::removeItem(Item *item)
 {
-    for (int i = 0; (unsigned)i < items.size(); i++)
+    for (int i = 0; (unsigned) i < items.size(); i++)
         if (items.at(i) == item)
             items.erase(items.begin() + i);
 }
